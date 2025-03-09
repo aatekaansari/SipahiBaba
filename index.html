@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Khan Ka Samsi Noori Zahangir</title>
+  <link rel="manifest" href="/manifest.json">
   <style>
-    /* Overall Colorful Light Theme */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #ffebee;
@@ -15,7 +15,6 @@
       min-height: 100vh;
       overflow: hidden;
     }
-    /* Fixed Header */
     header {
       position: fixed;
       top: 0;
@@ -62,7 +61,6 @@
       font-size: 14px;
       color: #eee;
     }
-    /* Control Bar */
     .control-bar {
       position: fixed;
       top: 80px;
@@ -84,8 +82,7 @@
       cursor: pointer;
       font-size: 14px;
     }
-    /* Create Account Dropdown */
-    #clientFileDropdown {
+    #clientFileDropdown, #menuDropdown {
       display: none;
       position: absolute;
       background-color: #fff;
@@ -94,12 +91,12 @@
       z-index: 2000;
       width: 220px;
     }
-    #clientFileDropdown ul {
+    #clientFileDropdown ul, #menuDropdown ul {
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    #clientFileDropdown li {
+    #clientFileDropdown li, #menuDropdown li {
       margin: 5px 0;
       cursor: pointer;
       padding: 3px;
@@ -112,7 +109,6 @@
       margin-left: 10px;
       cursor: pointer;
     }
-    /* Account List Section */
     #accountList {
       margin: 10px 0;
       padding: 10px;
@@ -139,7 +135,6 @@
       padding: 6px 10px;
       border-radius: 4px;
     }
-    /* Download All Profiles Button */
     #downloadAllProfilesBtn {
       background-color: #FF5722;
       border: none;
@@ -150,7 +145,6 @@
       border-radius: 4px;
       margin-top: 10px;
     }
-    /* Fixed Footer */
     footer {
       position: fixed;
       bottom: 0;
@@ -164,7 +158,6 @@
       font-size: 14px;
       z-index: 1000;
     }
-    /* Main Content Area */
     main {
       position: absolute;
       top: 130px;
@@ -182,7 +175,6 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
     }
-    /* Modal Styling */
     .modal {
       display: none;
       position: fixed;
@@ -249,7 +241,6 @@
       padding: 4px 8px;
       flex: 1;
     }
-    /* Output Section & Cards */
     .output {
       margin-top: 25px;
       padding: 25px;
@@ -349,8 +340,7 @@
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
-    /* Backup Modal */
-    #backupModal {
+    #backupModal, #iconUploadModal {
       display: none;
       position: fixed;
       z-index: 2000;
@@ -381,18 +371,27 @@
         </div>
       </div>
     </div>
-    <!-- Control Bar with Backup Button -->
+    <!-- Control Bar with Menu Button -->
     <div class="control-bar">
       <button class="profile-btn" id="profileButton">Profile</button>
       <button class="add-entry-btn" id="addEntryControlButton" onclick="openEntryModal()">Add Entry</button>
       <button class="client-file-btn" id="clientFileButton" onclick="toggleClientFileDropdown()">Create Account</button>
-      <button class="upload-logo-btn" onclick="logoFileInput.click()">Upload Logo</button>
-      <button class="backup-btn" onclick="showBackupModal()">Backup Data</button>
+      <button class="menu-btn" id="menuButton" onclick="toggleMenuDropdown()">Menu</button>
+      <button class="install-btn" onclick="installApp()">Install App</button>
     </div>
   </header>
   
   <!-- Create Account Dropdown -->
   <div id="clientFileDropdown"></div>
+  
+  <!-- Menu Dropdown -->
+  <div id="menuDropdown">
+    <ul>
+      <li onclick="logoFileInput.click()">Upload Logo</li>
+      <li onclick="openIconUploadModal()">Upload App Icons</li>
+      <li onclick="showBackupModal()">Backup Data</li>
+    </ul>
+  </div>
   
   <!-- Main Content -->
   <main>
@@ -480,10 +479,53 @@
     </div>
   </div>
   
+  <!-- Icon Upload Modal -->
+  <div id="iconUploadModal" class="modal">
+    <div class="modal-content">
+      <h2>Upload App Icons</h2>
+      <div class="form-group">
+        <label for="icon192">192x192 Icon:</label>
+        <input type="file" id="icon192" accept="image/*" />
+      </div>
+      <div class="form-group">
+        <label for="icon512">512x512 Icon:</label>
+        <input type="file" id="icon512" accept="image/*" />
+      </div>
+      <div class="form-group" style="display: flex; gap: 10px;">
+        <button type="button" onclick="saveIcons()">Save Icons</button>
+        <button type="button" onclick="closeIconUploadModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script>
+    // PWA Setup
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.querySelector('.install-btn').style.display = 'inline-block';
+    });
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert('App installation is not available at this moment.');
+      }
+    }
+
     const langData = {
       English: {
         headerTitle: "Khan Ka Samsi Noori Zahangir",
@@ -506,7 +548,7 @@
         removeColumnButton: "Remove Column",
         removePageButton: "Remove Page",
         downloadPDFButton: "Download PDF",
-        descriptionText: "<div style='text-align: center;'><strong>Piro Murshid Sanadul Aliya</strong><br>Hazrat Khwaja Sufi Shamsuddin Shah Rahmatullah Alaihi</div><br><div style='text-align: center;'><strong>Sahib-e-Sajjada Gaddi Nasheen</strong><br>Hazrat Sufi Mohammad Hasan Shah Shamsi Sanai Hasani Noori Chishi Qadri</div><br><div style='text-align: center; font-size: 12px;'><span style='font-size:12px;'>📱 9984405085</span>  |  <span style='font-size:12px;'>✉️ sipahibabatv@gmail.com</span>  |  <span style='font-size:12px;'>▶️ Sipahi Baba Tv</span></div>"
+        descriptionText: "<div style='text-align: center;'><strong>Piro Murshid Sanadul Aliya</strong><br>Hazrat Khwaja Sufi Shamsuddin Shah Rahmatullah Alaihi</div><br><div style='text-align: center;'><strong>Sahib-e-Sajjada Gaddi Nasheen</strong><br>Hazrat Sufi Mohammad Hasan Shah Shamsi Sanai Hasani Noori Chishi Qadri</div><br><div style='text-align: center; font-size: 12px;'><span style='font-size:12px;'>📱 9984405085</span>  |  <span style='font-size:12px;'>✉️ sipahibabatv@gmail.com</span>  |  <span style='font-size:12px;'>▶️ Sipahi Baba Tv</span></div>"
       }
     };
 
@@ -671,11 +713,28 @@
         document.body.removeChild(tempDiv);
       });
     }
-    document.addEventListener('click', function(e) {
-      const dropdown = document.getElementById('clientFileDropdown');
-      const clientFileButton = document.getElementById('clientFileButton');
-      if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== clientFileButton) {
+    function toggleMenuDropdown() {
+      const dropdown = document.getElementById('menuDropdown');
+      if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'block';
+        const btn = document.getElementById('menuButton');
+        const rect = btn.getBoundingClientRect();
+        dropdown.style.top = (rect.bottom + window.scrollY) + 'px';
+        dropdown.style.left = (rect.left + window.scrollX) + 'px';
+      } else {
         dropdown.style.display = 'none';
+      }
+    }
+    document.addEventListener('click', function(e) {
+      const clientDropdown = document.getElementById('clientFileDropdown');
+      const clientFileButton = document.getElementById('clientFileButton');
+      const menuDropdown = document.getElementById('menuDropdown');
+      const menuButton = document.getElementById('menuButton');
+      if (clientDropdown.style.display === 'block' && !clientDropdown.contains(e.target) && e.target !== clientFileButton) {
+        clientDropdown.style.display = 'none';
+      }
+      if (menuDropdown.style.display === 'block' && !menuDropdown.contains(e.target) && e.target !== menuButton) {
+        menuDropdown.style.display = 'none';
       }
     });
 
@@ -693,6 +752,83 @@
           localStorage.setItem('logo', e.target.result);
         };
         reader.readAsDataURL(file);
+      }
+      document.getElementById('menuDropdown').style.display = 'none';
+    });
+
+    function updateManifest() {
+      const manifest = {
+        "name": "Khan Ka Samsi Noori Zahangir",
+        "short_name": "Noori Zahangir",
+        "start_url": ".",
+        "display": "standalone",
+        "background_color": "#ffebee",
+        "theme_color": "#00695c",
+        "icons": [
+          {
+            "src": localStorage.getItem('icon192') || "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          },
+          {
+            "src": localStorage.getItem('icon512') || "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+          }
+        ]
+      };
+      const stringManifest = JSON.stringify(manifest);
+      const blob = new Blob([stringManifest], {type: 'application/json'});
+      const manifestURL = URL.createObjectURL(blob);
+      document.querySelector('link[rel="manifest"]').setAttribute('href', manifestURL);
+    }
+
+    function openIconUploadModal() {
+      document.getElementById('iconUploadModal').style.display = 'flex';
+      document.getElementById('menuDropdown').style.display = 'none';
+    }
+
+    function closeIconUploadModal() {
+      document.getElementById('iconUploadModal').style.display = 'none';
+      document.getElementById('icon192').value = '';
+      document.getElementById('icon512').value = '';
+    }
+
+    function saveIcons() {
+      const icon192File = document.getElementById('icon192').files[0];
+      const icon512File = document.getElementById('icon512').files[0];
+
+      if (!icon192File || !icon512File) {
+        alert('Please upload both 192x192 and 512x512 icons.');
+        return;
+      }
+
+      const reader192 = new FileReader();
+      const reader512 = new FileReader();
+
+      reader192.onload = function(e) {
+        localStorage.setItem('icon192', e.target.result);
+        if (reader512.result) {
+          updateManifest();
+          closeIconUploadModal();
+        }
+      };
+
+      reader512.onload = function(e) {
+        localStorage.setItem('icon512', e.target.result);
+        if (reader192.result) {
+          updateManifest();
+          closeIconUploadModal();
+        }
+      };
+
+      reader192.readAsDataURL(icon192File);
+      reader512.readAsDataURL(icon512File);
+    }
+
+    window.addEventListener('click', function(e) {
+      if (e.target === document.getElementById('iconUploadModal')) {
+        closeIconUploadModal();
       }
     });
 
@@ -953,17 +1089,19 @@
       document.body.removeChild(tempDiv);
     }
 
-    // Backup Functions
     function showBackupModal() {
       const backupModal = document.getElementById('backupModal');
       const backupData = document.getElementById('backupData');
       const data = {
         clientFiles: clientFiles,
         accountProfiles: accountProfiles,
-        logo: localStorage.getItem('logo')
+        logo: localStorage.getItem('logo'),
+        icon192: localStorage.getItem('icon192'),
+        icon512: localStorage.getItem('icon512')
       };
       backupData.value = JSON.stringify(data, null, 2);
       backupModal.style.display = 'flex';
+      document.getElementById('menuDropdown').style.display = 'none';
     }
     function closeBackupModal() {
       document.getElementById('backupModal').style.display = 'none';
@@ -994,7 +1132,19 @@
       loadClientFilesFromStorage();
       updateClientFileDropdown();
       updateAccountList();
+      updateManifest();
     });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(function(registration) {
+            console.log('Service Worker registered with scope:', registration.scope);
+          }, function(error) {
+            console.log('Service Worker registration failed:', error);
+          });
+      });
+    }
   </script>
 </body>
 </html>
