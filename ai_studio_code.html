@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khan Ka Samsi Noori Zahangir</title>
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    :root {
+      --primary-green: #00897b;
+      --primary-blue: #1e88e5;
+      --light-pink-bg: #fce4ec;
+      --white-card: #ffffff;
+      --dark-text: #333;
+      --light-text: #f5f5f5;
+      --danger-red: #d32f2f;
+      --warning-orange: #f4511e;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--light-pink-bg);
+      color: var(--dark-text);
+      margin: 0;
+      padding-top: 82px;
+      padding-bottom: 60px;
+      min-height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    header, footer {
+      background-color: var(--primary-green);
+      color: var(--light-text);
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    header { top: 0; }
+    footer { bottom: 0; text-align: center; padding: 12px; font-size: 14px; }
+    .header-box { display: flex; align-items: center; padding: 10px 15px; }
+    .logo-preview { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid var(--light-text); flex-shrink: 0; }
+    .logo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .text-content { margin-left: 15px; }
+    .text-content h1 { margin: 0; font-size: 20px; }
+    .text-content p { margin: 4px 0 0; font-size: 16px; opacity: 0.9; }
+    #loginContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      padding: 20px;
+    }
+    .login-box {
+      background-color: var(--white-card);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-box h2 {
+      margin-top: 0;
+      margin-bottom: 25px;
+      color: var(--primary-green);
+    }
+    .login-box .form-group { margin-bottom: 20px; }
+    .login-box label { display: block; text-align: left; margin-bottom: 8px; font-weight: 500; }
+    .login-box input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+    .login-box button { width: 100%; padding: 12px; border: none; border-radius: 8px; background-color: var(--primary-green); color: var(--light-text); font-size: 18px; font-weight: bold; cursor: pointer; }
+    #appContainer { padding-top: 63px; }
+    .control-bar {
+      position: fixed;
+      top: 82px;
+      left: 0;
+      right: 0;
+      background-color: var(--primary-blue);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 999;
+    }
+    .control-bar button { background: none; border: none; color: var(--light-text); font-size: 16px; font-weight: 500; cursor: pointer; padding: 5px 10px; }
+    #sidebar-icon { font-size: 24px; }
+    main { padding: 15px; }
+    #accountList {
+      background-color: var(--white-card);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    #totalAccounts { font-size: 18px; font-weight: 600; margin-bottom: 15px; }
+    #accountButtons { display: flex; gap: 10px; flex-wrap: wrap; }
+    #accountButtons button {
+      background-color: var(--primary-green);
+      color: var(--light-text);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #downloadAllProfilesBtn {
+      background-color: var(--warning-orange);
+      color: var(--light-text);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .output-card {
+      background-color: #f3e5f5;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .output-card .header-box { border-radius: 12px 12px 0 0; }
+    .card-content-wrapper { padding: 20px; background-color: #ede7f6; }
+    .card-profile { font-size: 18px; margin-bottom: 15px; }
+    .card-profile p { margin: 8px 0; }
+    .profile-description-box {
+        background-color: #fafafa;
+        border: 1px solid #ddd;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        min-height: 24px;
+        white-space: pre-wrap;
+    }
+    .entry-table table { width: 100%; border-collapse: collapse; background-color: var(--white-card); border-radius: 8px; overflow: hidden; font-size: 16px; }
+    .entry-table th, .entry-table td { padding: 12px; border: 1px solid #b3e5fc; text-align: left; }
+    .entry-table th { background-color: var(--primary-blue); color: var(--light-text); width: 35%; }
+    .description-box { margin-top: 15px; padding: 15px; background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; font-size: 14px; line-height: 1.6; white-space: pre-line; }
+    .card-buttons { display: flex; gap: 10px; padding: 15px; background-color: #e8eaf6; }
+    .card-buttons button { flex: 1; padding: 12px; border: none; border-radius: 8px; color: var(--light-text); font-weight: bold; cursor: pointer; font-size: 16px; background-color: var(--primary-blue); }
+    .card-buttons button:first-child { background-color: var(--danger-red); }
+    .modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+    .modal-content { background: var(--white-card); padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+    .modal-content h2 { margin-top: 0; font-size: 22px; }
+    .modal-content .form-group { margin-bottom: 15px; }
+    .modal-content label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 16px; }
+    .modal-content input, .modal-content textarea, .modal-content select { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+    .modal-content button { padding: 12px; border-radius: 8px; border: none; font-size: 16px; cursor: pointer; background-color: var(--primary-green); color: var(--light-text); }
+    #shareModal .modal-content button { width: 100%; margin-bottom: 10px; }
+    #sidebar { position: fixed; z-index: 3000; top: 0; right: -300px; width: 280px; height: 100%; background: var(--white-card); box-shadow: -2px 0 8px rgba(0,0,0,0.2); transition: right 0.3s ease-in-out; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+    #sidebar.open { right: 0; }
+    #sidebar h2 { text-align: center; }
+    #sidebar ul { list-style: none; padding: 0; margin: 20px 0; }
+    #sidebar li { padding: 15px 10px; cursor: pointer; border-bottom: 1px solid #eee; text-align: center; font-size: 18px; }
+    #sidebar li:hover { background-color: #f0f0f0; }
+    #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 2999; }
+    #submitBtnContainer { margin-bottom: 20px; }
+    #submitBtnContainer button { background-color: var(--primary-blue) !important; font-size: 18px !important; font-weight: bold; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-box">
+      <div class="logo-preview" id="headerLogo"><img src="https://raw.githubusercontent.com/aatekaansari/SipahiBaba/refs/heads/main/ei_1741111562242-removebg-preview.png" alt="Logo"></div>
+      <div class="text-content">
+        <h1 id="headerTitle">Khan Ka Samsi Noori Zahangir</h1>
+        <p id="headerSubtitle">Sipahi Baba Ruhani Alaaj</p>
+      </div>
+    </div>
+  </header>
+  
+  <div id="loginContainer">
+      <div class="login-box">
+          <h2>Admin Login</h2>
+          <div class="form-group">
+              <label for="email">ईमेल:</label>
+              <input type="email" id="email" placeholder="admin@example.com">
+          </div>
+          <div class="form-group">
+              <label for="password">पासवर्ड:</label>
+              <input type="password" id="password" placeholder="password">
+          </div>
+          <button type="button" onclick="handleLogin()">Login</button>
+      </div>
+  </div>
+
+  <div id="appContainer" style="display: none;">
+    <div class="control-bar">
+      <button onclick="openEntryModal()">Add Entry</button>
+      <button onclick="openProfileModal()">Create Account</button>
+      <button id="sidebar-icon" onclick="openSidebar()">&#9776;</button>
+    </div>
+  
+    <div id="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li id="installAppItem" onclick="installApp()" style="display:none; background-color: var(--primary-blue); color: white;">Install App</li>
+        <li onclick="logoFileInput.click(); closeSidebar();">Upload Logo</li>
+        <li onclick="openHeaderTitleModal(); closeSidebar();">Edit Header Title</li>
+        <li onclick="openColumnSettingsModal(); closeSidebar();">Edit Column Titles</li>
+        <li onclick="openProfileDescriptionModal(); closeSidebar();">Edit Profile Descriptions</li>
+        <li onclick="openDisclaimerModal(); closeSidebar();">Disclaimer</li>
+        <li onclick="showBackupModal(); closeSidebar();">Backup Data</li>
+        <li onclick="triggerRestore(); closeSidebar();">Restore Backup</li>
+        <li onclick="openIconUploadModal(); closeSidebar();">Upload App Icons</li>
+        <li onclick="openChangeCredentialsModal(); closeSidebar();">Change Password</li>
+        <li onclick="handleLogout()" style="color: var(--danger-red);">Logout</li>
+      </ul>
+      <button type="button" onclick="closeSidebar()" style="width: 100%;">Close</button>
+    </div>
+    <div id="overlay" onclick="closeSidebar()"></div>
+    
+    <main>
+      <div id="accountList">
+        <div id="totalAccounts"></div>
+        <div id="accountButtons"></div>
+        <button id="downloadAllProfilesBtn" onclick="downloadAllProfiles()">Download All Profiles</button>
+      </div>
+      <div class="output" id="outputSection">
+        <div id="outputContainer"></div>
+      </div>
+    </main>
+  </div>
+  
+  <footer>© 2025 Khan Ka Samsi Noori Zahangir. All Rights Reserved.</footer>
+  
+  <!-- Modals -->
+  <div id="profileModal" class="modal"><div class="modal-content"><h2>Create Profile</h2><div class="form-group"><label for="modalName">Name:</label><input type="text" id="modalName"/></div><div class="form-group"><label for="modalMobile">Mobile Number:</label><input type="tel" id="modalMobile"/></div><div class="form-group"><label for="modalAddress">Address:</label><input type="text" id="modalAddress"/></div><div class="form-group"><label for="modalDescription">Description:</label><textarea id="modalDescription" rows="3"></textarea></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="saveProfile()">Save Profile</button><button type="button" onclick="closeModal('profileModal')" style="background-color: #757575;">Cancel</button></div></div></div>
+  <div id="entryModal" class="modal"><div class="modal-content"><h2>Add Entry</h2><div class="form-group"><label for="entryAccountSelect">Account Profile:</label><select id="entryAccountSelect"></select></div><div class="form-group"><label for="date">Date:</label><input type="date" id="date"/></div><div class="form-group"><label for="fees">Fees (INR):</label><input type="number" id="fees" step="0.01"/></div><div id="defaultColumnsContainer"></div><div id="extraColumnsContainer"></div><div id="submitBtnContainer"><button type="button" onclick="submitEntryModal()">Submit Entry</button></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="addColumn()">Add Column</button><button type="button" onclick="removeLastExtraColumn()" style="background-color: var(--warning-orange);">Remove Column</button></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="closeModal('entryModal')" style="background-color: #757575; width: 100%;">Cancel</button></div></div></div>
+  <div id="headerTitleModal" class="modal"><div class="modal-content"><h2>Edit Header Title</h2><div class="form-group"><label for="headerTitleInput">Header Title:</label><input type="text" id="headerTitleInput"></div><div class="form-group" style="display: flex; gap: 10px;"><button onclick="saveHeaderTitle()">Save</button><button onclick="closeModal('headerTitleModal')" style="background-color: #757575;">Cancel</button></div></div></div>
+  <div id="columnSettingsModal" class="modal"><div class="modal-content"><h2>Edit Default Column Titles</h2><div id="columnSettingsContainer"></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="saveColumnTitles()">Save Titles</button><button type="button" onclick="closeModal('columnSettingsModal')" style="background-color:#757575;">Cancel</button></div></div></div>
+  <div id="profileDescriptionModal" class="modal"><div class="modal-content"><h2>Edit Profile Description</h2><div class="form-group"><label for="profileSelectForDesc">Select Profile:</label><select id="profileSelectForDesc"></select></div><div class="form-group"><label for="profileDescriptionTextarea">Description:</label><textarea id="profileDescriptionTextarea" rows="4"></textarea></div><div class="form-group" style="display: flex; gap: 10px;"><button onclick="saveProfileDescription()">Save Description</button><button onclick="closeModal('profileDescriptionModal')" style="background-color:#757575;">Cancel</button></div></div></div>
+  <div id="disclaimerModal" class="modal"><div class="modal-content"><h2>Edit Disclaimer</h2><div class="form-group"><label for="disclaimerText">Disclaimer Text:</label><textarea id="disclaimerText" style="height: 250px;"></textarea></div><div class="form-group" style="display: flex; gap: 10px;"><button type="button" onclick="saveDisclaimer()">Save</button><button type="button" onclick="deleteDisclaimer()" style="background-color: var(--danger-red);">Delete</button><button type="button" onclick="closeModal('disclaimerModal')" style="background-color: #757575;">Cancel</button></div></div></div>
+  <div id="shareModal" class="modal"><div class="modal-content"><h2>Share or Download PDF</h2><button id="shareWhatsappBtn">Share on WhatsApp</button><button id="shareEmailBtn">Send via Email</button><button id="printPdfBtn">Print PDF</button><button id="downloadPdfBtn" style="background-color: var(--warning-orange);">Download PDF</button><button type="button" onclick="closeModal('shareModal')" style="margin-top: 15px; background-color: #757575;">Cancel</button></div></div></div>
+  <div id="backupModal" class="modal"><div class="modal-content"><h2>Backup Data</h2><p>यह आपके Firebase डेटा का एक लोकल बैकअप बनाएगा।</p><div class="form-group"><label for="backupData">Client Data (JSON):</label><textarea id="backupData" readonly style="height: 150px;"></textarea></div><div class="form-group" style="display: flex; flex-direction: column; gap: 10px;"><button onclick="downloadBackup()">Download Backup</button><button onclick="closeModal('backupModal')" style="background-color: #757575;">Close</button></div></div></div>
+  <div id="iconUploadModal" class="modal"><div class="modal-content"><h2>Upload App Icons</h2><div class="form-group"><label for="icon192">192x192 Icon:</label><input type="file" id="icon192" accept="image/*"/></div><div class="form-group"><label for="icon512">512x512 Icon:</label><input type="file" id="icon512" accept="image/*"/></div><div class="form-group" style="display: flex; gap: 10px;"><button onclick="saveIcons()">Save Icons</button><button onclick="closeModal('iconUploadModal')" style="background-color: #757575;">Cancel</button></div></div></div>
+  <div id="credentialsModal" class="modal"><div class="modal-content"><h2>Change Password</h2><div class="form-group"><label for="newPassword">New Password:</label><input type="password" id="newPassword" required /></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="saveCredentials()">Save Changes</button><button type="button" onclick="closeModal('credentialsModal')" style="background-color: #757575;">Cancel</button></div></div></div>
+  <input type="file" id="restoreFileInput" style="display: none;" accept=".json">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    // --- FIREBASE INITIALIZATION ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyDdRgKyM4drYrWkP1wslsv1unmA3G2LaMs",
+        authDomain: "samsiapp.firebaseapp.com",
+        projectId: "samsiapp",
+        storageBucket: "samsiapp.firebasestorage.app",
+        messagingSenderId: "556760829050",
+        appId: "1:556760829050:web:2caa478d5e45f403783fc3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    // --- GLOBAL VARIABLES ---
+    let userId = null;
+    let userRef = null;
+    let localSettings = {};
+    let defaultColumns = [];
+    let extraColumns = [];
+    let accountProfiles = {};
+    let clientFiles = {};
+    let currentClientFile = null;
+    let cardCounter = 0;
+    let deferredPrompt; // For PWA installation prompt
+    const initialDisclaimer = `<div style='text-align: center;'><strong>Piro Murshid Sanadul Aliya</strong><br>Hazrat Khwaja Sufi Shamsuddin Shah Rahmatullah Alaihi</div><br><div style='text-align: center;'><strong>Sahib-e-Sajjada Gaddi Nasheen</strong><br>Hazrat Sufi Mohammad Hasan Shah Shamsi Sanai Hasani Noori Chishi Qadri</div><br><div style='text-align: center; font-size: 14px;'><span>📱 9984405085</span> | <span>✉️ sipahibabatv@gmail.com</span> | <span>▶️ Sipahi Baba Tv</span></div>`;
+    
+    // --- PWA (INSTALL APP) LOGIC ---
+    window.addEventListener('load', () => {
+        // Register the service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => console.log('Service worker registered.', reg))
+                .catch(err => console.error('Service worker registration failed:', err));
+        }
+    });
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent Chrome 67 and earlier from automatically showing the prompt
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        // Update UI to notify the user they can add to home screen
+        const installButton = document.getElementById('installAppItem');
+        if(installButton) {
+            installButton.style.display = 'block';
+        }
+    });
+
+    async function installApp() {
+        const installButton = document.getElementById('installAppItem');
+        if (deferredPrompt) {
+            // Show the prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            // We've used the prompt, and can't use it again, throw it away
+            deferredPrompt = null;
+            // Hide the button
+            if(installButton) {
+                installButton.style.display = 'none';
+            }
+        }
+        closeSidebar();
+    }
+
+
+    // --- AUTHENTICATION LOGIC ---
+    function handleLogin() {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        auth.signInWithEmailAndPassword(email, pass)
+            .catch(error => alert("Login failed: " + error.message));
+    }
+
+    function handleLogout() {
+        auth.signOut();
+    }
+
+    function openChangeCredentialsModal() {
+        document.getElementById('newPassword').value = '';
+        document.getElementById('credentialsModal').style.display = 'flex';
+    }
+
+    function saveCredentials() {
+        const newPass = document.getElementById('newPassword').value.trim();
+        if (!newPass || newPass.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return;
+        }
+        auth.currentUser.updatePassword(newPass)
+            .then(() => {
+                alert("Password updated successfully!");
+                closeModal('credentialsModal');
+            })
+            .catch(error => {
+                alert("Error updating password: " + error.message + "\nPlease log out and log back in to try again.");
+            });
+    }
+
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            userId = user.uid;
+            userRef = db.ref('users/' + userId);
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            initializeApp();
+        } else {
+            userId = null;
+            userRef = null;
+            if(document.getElementById('appContainer')) document.getElementById('appContainer').style.display = 'none';
+            if(document.getElementById('loginContainer')) document.getElementById('loginContainer').style.display = 'flex';
+        }
+    });
+
+    // --- MAIN APP LOGIC ---
+    function initializeApp() {
+        userRef.on('value', snapshot => {
+            const data = snapshot.val() || {};
+            
+            clientFiles = data.clientFiles || {};
+            accountProfiles = data.accountProfiles || {};
+            localSettings = data.settings || {};
+            cardCounter = localSettings.cardCounter || 0;
+            
+            document.getElementById('headerTitle').textContent = localSettings.headerTitle || "Khan Ka Samsi Noori Zahangir";
+            document.getElementById('headerLogo').querySelector('img').src = localSettings.logo || 'https://raw.githubusercontent.com/aatekaansari/SipahiBaba/refs/heads/main/ei_1741111562242-removebg-preview.png';
+            
+            defaultColumns = localSettings.defaultColumns || [
+                { key: "pina", label: "Pina" }, { key: "chita", label: "Chita" },
+                { key: "falita", label: "Falita" }, { key: "jalana", label: "Jalana" }
+            ];
+
+            currentClientFile = localStorage.getItem('currentClientFile-' + userId);
+            
+            updateDefaultColumnsForm();
+            updateAccountList();
+            loadClientFileOutput();
+        }, error => {
+            console.error("Firebase read failed: ", error);
+            alert("Could not connect to the database. You may be offline or there might be a configuration issue.");
+        });
+
+        document.getElementById('restoreFileInput').addEventListener('change', handleRestoreFileSelect);
+    }
+
+    function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+    
+    // --- SETTINGS FUNCTIONS (MODAL OPENERS) ---
+    function openHeaderTitleModal() {
+        document.getElementById('headerTitleInput').value = localSettings.headerTitle || "Khan Ka Samsi Noori Zahangir";
+        document.getElementById('headerTitleModal').style.display = 'flex';
+    }
+    
+    function openColumnSettingsModal() { 
+        const container = document.getElementById('columnSettingsContainer');
+        container.innerHTML = (localSettings.defaultColumns || defaultColumns).map((col, index) => `<div class="form-group"><label for="col_title_${index}">Title for "${col.key}":</label><input type="text" id="col_title_${index}" value="${col.label}" /></div>`).join('');
+        document.getElementById('columnSettingsModal').style.display = 'flex'; 
+    }
+
+    function openDisclaimerModal() {
+        document.getElementById('disclaimerText').value = localSettings.disclaimer || initialDisclaimer;
+        document.getElementById('disclaimerModal').style.display = 'flex';
+    }
+
+    // --- SETTINGS FUNCTIONS (SAVE ACTIONS) ---
+    function saveHeaderTitle() {
+        const newTitle = document.getElementById('headerTitleInput').value.trim();
+        if (newTitle) {
+            userRef.child('settings/headerTitle').set(newTitle)
+                .then(() => { alert("Header title updated!"); closeModal('headerTitleModal'); })
+                .catch(e => alert("Error: " + e.message));
+        } else {
+            alert("Title cannot be empty.");
+        }
+    }
+
+    function saveColumnTitles() {
+        const newDefaultColumns = [...defaultColumns];
+        newDefaultColumns.forEach((col, index) => {
+            const newLabel = document.getElementById(`col_title_${index}`).value;
+            if (newLabel) col.label = newLabel;
+        });
+        userRef.child('settings/defaultColumns').set(newDefaultColumns)
+            .then(() => { alert("Column titles updated!"); closeModal('columnSettingsModal'); })
+            .catch(e => alert("Error: " + e.message));
+    }
+
+    function saveDisclaimer() {
+        const text = document.getElementById('disclaimerText').value;
+        userRef.child('settings/disclaimer').set(text)
+            .then(() => { alert('Disclaimer saved!'); closeModal('disclaimerModal'); })
+            .catch(e => alert("Error: " + e.message));
+    }
+
+    function deleteDisclaimer() {
+        if (confirm('Are you sure?')) {
+            userRef.child('settings/disclaimer').remove()
+                .then(() => { alert('Disclaimer deleted!'); closeModal('disclaimerModal'); })
+                .catch(e => alert("Error: " + e.message));
+        }
+    }
+
+    const logoFileInput = document.createElement('input');
+    logoFileInput.type = 'file'; logoFileInput.accept = 'image/*'; logoFileInput.style.display = 'none';
+    document.body.appendChild(logoFileInput);
+    logoFileInput.addEventListener('change', e => {
+        if (e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = event => {
+                userRef.child('settings/logo').set(event.target.result).catch(e => alert("Error saving logo: " + e.message));
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+
+    // --- PROFILE AND ENTRY FUNCTIONS ---
+    function saveProfile() {
+      const name = document.getElementById('modalName').value.trim();
+      if (!name) { alert("Name is required."); return; }
+      if (/[.#$\[\]]/.test(name)) {
+          alert("Name cannot contain ., #, $, [, or ]"); return;
+      }
+      const profileData = { name: name, mobile: document.getElementById('modalMobile').value, address: document.getElementById('modalAddress').value, description: document.getElementById('modalDescription').value };
+      const updates = { [`/accountProfiles/${name}`]: profileData };
+      if (!clientFiles[name]) { updates[`/clientFiles/${name}`] = {}; }
+      userRef.update(updates)
+          .then(() => { selectClientFile(name); closeModal('profileModal'); })
+          .catch(e => alert("Error saving profile: " + e.message));
+    }
+
+    function saveProfileDescription() {
+        const selectedName = document.getElementById('profileSelectForDesc').value;
+        if (selectedName) {
+            const newDescription = document.getElementById('profileDescriptionTextarea').value;
+            userRef.child(`/accountProfiles/${selectedName}/description`).set(newDescription)
+                .then(() => { alert("Description updated successfully!"); closeModal('profileDescriptionModal'); })
+                .catch(e => alert("Error: " + e.message));
+        }
+    }
+
+    function addEntry() {
+        const entry = { date: document.getElementById('date').value, fees: document.getElementById('fees').value };
+        defaultColumns.forEach(col => { entry[col.key] = document.getElementById(`default_${col.key}`).value || ""; });
+        entry.extraColumns = {};
+        extraColumns.forEach((colName, index) => { entry.extraColumns[colName] = document.getElementById(`extra_col_${index}`).value || ""; });
+        if (!entry.date) { alert('Please fill the date field.'); return; }
+        
+        const newCardCounter = cardCounter + 1;
+        const newCard = { id: newCardCounter, entry: entry };
+        
+        // Firebase works better with objects/push keys for lists, but to maintain compatibility we use an array-like object.
+        const currentEntries = clientFiles[currentClientFile] ? Object.values(clientFiles[currentClientFile]).filter(Boolean) : [];
+        currentEntries.push(newCard);
+
+        const updates = {
+            [`/clientFiles/${currentClientFile}`]: currentEntries,
+            '/settings/cardCounter': newCardCounter
+        };
+        
+        userRef.update(updates)
+             .then(() => { document.getElementById('entryModal').querySelectorAll('input[type=text], input[type=number], textarea').forEach(input => input.value = ''); })
+             .catch(e => alert("Error adding entry: " + e.message));
+    }
+
+    function removeCard(cardId) {
+        if (confirm('Are you sure?')) {
+            const idToRemove = parseInt(cardId.split('_')[1]);
+            const currentEntries = clientFiles[currentClientFile] ? Object.values(clientFiles[currentClientFile]).filter(Boolean) : [];
+            const newEntries = currentEntries.filter(card => card && card.id !== idToRemove);
+            
+            userRef.child(`/clientFiles/${currentClientFile}`).set(newEntries)
+                .catch(e => alert("Error removing card: " + e.message));
+        }
+    }
+
+    function removeClientFile(fileName) {
+        if (confirm(`Are you sure you want to delete "${fileName}"? This cannot be undone.`)) {
+            const updates = {
+                [`/clientFiles/${fileName}`]: null,
+                [`/accountProfiles/${fileName}`]: null
+            };
+            userRef.update(updates).then(() => {
+                if (currentClientFile === fileName) {
+                    currentClientFile = null;
+                    localStorage.removeItem('currentClientFile-' + userId);
+                }
+            }).catch(e => alert("Error deleting file: " + e.message));
+        }
+    }
+    
+    // --- UI and MODAL FUNCTIONS ---
+    
+    function setupModalScroll() {
+        const modalContent = document.querySelector('#entryModal .modal-content');
+        const inputs = modalContent.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                setTimeout(() => {
+                    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
+        });
+    }
+
+    function openEntryModal() {
+        if(Object.keys(accountProfiles).length === 0) { alert("Please create a profile first."); return; }
+        document.getElementById('date').valueAsDate = new Date();
+        const select = document.getElementById('entryAccountSelect');
+        select.innerHTML = Object.keys(accountProfiles).sort().map(name => `<option value="${name}">${name}</option>`).join('');
+        if (currentClientFile) { select.value = currentClientFile; }
+        extraColumns = [];
+        updateExtraColumnsForm();
+        document.getElementById('entryModal').style.display = 'flex';
+        setupModalScroll();
+    }
+    
+    function submitEntryModal() {
+        currentClientFile = document.getElementById('entryAccountSelect').value;
+        if (!currentClientFile) { alert("Please select an account."); return; }
+        addEntry();
+        closeModal('entryModal');
+    }
+
+    function createOutputCard(cardData) {
+        if (!cardData || !cardData.entry) return '';
+        const { id, entry } = cardData;
+        const headerTitleText = localSettings.headerTitle || "Khan Ka Samsi Noori Zahangir";
+        const logoSrc = localSettings.logo || 'https://raw.githubusercontent.com/aatekaansari/SipahiBaba/refs/heads/main/ei_1741111562242-removebg-preview.png';
+        const disclaimer = localSettings.disclaimer || initialDisclaimer;
+        
+        let profileHTML = 'Profile not found.';
+        if (accountProfiles[currentClientFile]) {
+            const pData = accountProfiles[currentClientFile];
+            profileHTML = `<div class="card-profile" data-profile-name="${pData.name}">
+                <p><strong>Name:</strong> ${pData.name || ''}</p>
+                <p><strong>Mobile Number:</strong> ${pData.mobile || ''}</p>
+                <p><strong>Address:</strong> ${pData.address || ''}</p>
+                <div class="profile-description-box">${pData.description || ''}</div>
+            </div>`;
+        }
+        let tableRows = `<tr><th>Date</th><td>${entry.date || ''}</td></tr><tr><th>Fees (INR)</th><td>${entry.fees || ''}</td></tr>`;
+        defaultColumns.forEach(col => { tableRows += `<tr><th>${col.label}</th><td>${entry[col.key] || ''}</td></tr>`; });
+        if(entry.extraColumns) {
+            for (const [key, value] of Object.entries(entry.extraColumns)) {
+                 tableRows += `<tr><th>${key}</th><td>${value || ''}</td></tr>`;
+            }
+        }
+        return `<div class="output-card" id="outputCard_${id}"><div class="header-box"><div class="logo-preview"><img src="${logoSrc}" alt="Logo"></div><div class="text-content"><h1>${headerTitleText}</h1><p>Sipahi Baba Ruhani Alaaj</p></div></div><div class="card-content-wrapper">${profileHTML}<div class="entry-table"><table><tbody>${tableRows}</tbody></table></div><div class="description-box">${disclaimer}</div></div><div class="card-buttons"><button onclick="removeCard('outputCard_${id}')">Remove Page</button><button onclick="handleCardAction('outputCard_${id}')">Share / Download</button></div></div>`;
+    }
+    
+    function updateAccountList() {
+        const total = Object.keys(accountProfiles).length;
+        document.getElementById('totalAccounts').textContent = "Total Accounts: " + total;
+        const buttonsContainer = document.getElementById('accountButtons');
+        buttonsContainer.innerHTML = '';
+        Object.keys(accountProfiles).sort().forEach(file => {
+            const count = clientFiles[file] ? Object.values(clientFiles[file]).filter(Boolean).length : 0;
+            const style = currentClientFile === file ? 'background-color: #004d40; border: 2px solid var(--primary-blue);' : '';
+            buttonsContainer.innerHTML += `<button onclick="selectClientFile('${file}')" ondblclick="removeClientFile('${file}')" title="Double-click to delete" style="${style}">${file} (${count})</button>`;
+        });
+    }
+
+    function selectClientFile(fileName) {
+      currentClientFile = fileName;
+      localStorage.setItem('currentClientFile-' + userId, fileName);
+      loadClientFileOutput();
+      updateAccountList();
+    }
+
+    function loadClientFileOutput() {
+      const container = document.getElementById('outputContainer');
+      container.innerHTML = "";
+      if (currentClientFile && clientFiles[currentClientFile]) {
+        Object.values(clientFiles[currentClientFile]).forEach(cardData => {
+            container.innerHTML += createOutputCard(cardData);
+        });
+      }
+    }
+    
+    function openProfileDescriptionModal() {
+        const select = document.getElementById('profileSelectForDesc');
+        const textarea = document.getElementById('profileDescriptionTextarea');
+        select.innerHTML = Object.keys(accountProfiles).sort().map(name => `<option value="${name}">${name}</option>`).join('');
+        const updateTextarea = () => {
+            const selectedName = select.value;
+            if (selectedName && accountProfiles[selectedName]) {
+                textarea.value = accountProfiles[selectedName].description || '';
+            }
+        };
+        select.onchange = updateTextarea;
+        updateTextarea(); 
+        document.getElementById('profileDescriptionModal').style.display = 'flex';
+    }
+    
+    // --- BACKUP & RESTORE FUNCTIONS ---
+    function triggerRestore() {
+        document.getElementById('restoreFileInput').click();
+    }
+    
+    function handleRestoreFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const backupData = JSON.parse(e.target.result);
+                if (!backupData.clientFiles && !backupData.accountProfiles && !backupData.settings) {
+                    throw new Error("Invalid backup file format.");
+                }
+                if (confirm("Are you sure you want to restore this backup? ALL current data will be overwritten.")) {
+                    userRef.set(backupData)
+                        .then(() => alert("Backup restored successfully! The page will now reload."))
+                        .then(() => location.reload())
+                        .catch(err => alert("Error restoring data: " + err.message));
+                }
+            } catch (error) {
+                alert("Failed to read or parse the backup file: " + error.message);
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = ''; // Reset file input
+    }
+    
+    function showBackupModal() {
+        userRef.get().then(snapshot => {
+            document.getElementById('backupData').value = JSON.stringify(snapshot.val(), null, 2);
+            document.getElementById('backupModal').style.display = 'flex';
+        });
+    }
+    
+    function downloadBackup() {
+        const data = document.getElementById('backupData').value;
+        const blob = new Blob([data], {type: 'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `firebase-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+
+    // --- UTILITY FUNCTIONS ---
+    function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').style.display = 'block'; }
+    function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
+    function openProfileModal() { document.getElementById('profileModal').style.display = 'flex'; }
+    function openIconUploadModal() { document.getElementById('iconUploadModal').style.display = 'flex'; }
+    function addColumn() { const colName = prompt("Enter new column name:"); if (colName) { extraColumns.push(colName.trim()); updateExtraColumnsForm(); } }
+    function removeLastExtraColumn() { if (extraColumns.length > 0) { extraColumns.pop(); } else { alert("No extra columns to remove."); } updateExtraColumnsForm(); }
+    function updateExtraColumnsForm() { document.getElementById('extraColumnsContainer').innerHTML = extraColumns.map((colName, i) => `<div class="form-group"><label for="extra_col_${i}">${colName}</label><input type="text" id="extra_col_${i}"/></div>`).join(''); }
+    function updateDefaultColumnsForm() { document.getElementById('defaultColumnsContainer').innerHTML = defaultColumns.map(col => `<div class="form-group"><label for="default_${col.key}">${col.label}</label><input type="text" id="default_${col.key}"/></div>`).join(''); }
+    
+    async function handleCardAction(cardId) {
+        const card = document.getElementById(cardId);
+        if (!card) return;
+        const cardButtons = card.querySelector('.card-buttons');
+        cardButtons.style.display = 'none';
+        const printableCard = document.createElement('div');
+        printableCard.style.cssText = 'position: absolute; left: -9999px; width: 800px; background: white;';
+        printableCard.innerHTML = card.outerHTML;
+        document.body.appendChild(printableCard);
+        try {
+            const canvas = await html2canvas(printableCard.querySelector('.output-card'), { scale: 2, useCORS: true });
+            const imgData = canvas.toDataURL('image/jpeg', 0.7);
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const ratio = (pdfWidth - 20) / canvas.width;
+            const pdfHeight = canvas.height * ratio;
+            pdf.addImage(imgData, 'JPEG', 10, 10, pdfWidth - 20, pdfHeight);
+            openShareModal(pdf, pdf.output('blob'), `${currentClientFile || 'report'}.pdf`);
+        } catch (error) {
+            console.error("PDF generation failed:", error);
+            alert("Could not generate PDF.");
+        } finally {
+            cardButtons.style.display = 'flex';
+            document.body.removeChild(printableCard);
+        }
+    }
+    
+    function openShareModal(pdfInstance, pdfBlob, fileName) {
+        const modal = document.getElementById('shareModal');
+        modal.style.display = 'flex';
+        document.getElementById('downloadPdfBtn').onclick = () => { pdfInstance.save(fileName); closeModal('shareModal'); };
+        document.getElementById('printPdfBtn').onclick = () => { pdfInstance.autoPrint(); window.open(pdfInstance.output('bloburl'), '_blank'); closeModal('shareModal'); };
+        const shareFile = new File([pdfBlob], fileName, { type: 'application/pdf' });
+        const shareData = { files: [shareFile], title: fileName };
+        if(navigator.canShare && navigator.canShare(shareData)) {
+            document.getElementById('shareWhatsappBtn').style.display = 'block';
+            document.getElementById('shareWhatsappBtn').onclick = () => { navigator.share(shareData).then(() => closeModal('shareModal')); };
+        } else {
+            document.getElementById('shareWhatsappBtn').style.display = 'none';
+        }
+    }
+    
+    async function downloadAllProfiles() {
+        if (Object.keys(accountProfiles).length === 0) { alert("No profiles to download."); return; }
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        let yPos = 15;
+        const pageHeight = pdf.internal.pageSize.getHeight() - 15;
+        for (const pData of Object.values(accountProfiles)) {
+            pdf.setFontSize(16).setFont(undefined, 'bold');
+            const nameLines = pdf.splitTextToSize(pData.name || 'N/A', 180);
+            pdf.setFontSize(12).setFont(undefined, 'normal');
+            const mobileLines = pdf.splitTextToSize(`Mobile: ${pData.mobile || 'N/A'}`, 180);
+            const addressLines = pdf.splitTextToSize(`Address: ${pData.address || 'N/A'}`, 180);
+            const descLines = pdf.splitTextToSize(`Description: ${pData.description || 'N/A'}`, 180);
+            const blockHeight = (nameLines.length * 7) + (mobileLines.length * 5) + (addressLines.length * 5) + (descLines.length * 5) + 15;
+            if (yPos + blockHeight > pageHeight && yPos > 15) { pdf.addPage(); yPos = 15; }
+            pdf.setFontSize(16).setFont(undefined, 'bold'); pdf.text(nameLines, 15, yPos); yPos += (nameLines.length * 7);
+            pdf.setFontSize(12).setFont(undefined, 'normal'); pdf.text(mobileLines, 15, yPos); yPos += (mobileLines.length * 5) + 2;
+            pdf.text(addressLines, 15, yPos); yPos += (addressLines.length * 5) + 2;
+            pdf.text(descLines, 15, yPos); yPos += (descLines.length * 5) + 10;
+            if (yPos < pageHeight) { pdf.line(15, yPos, 195, yPos); yPos += 5; }
+        }
+        pdf.save('all_profiles.pdf');
+        alert("All profiles PDF has been generated!");
+    }
+    
+    function saveIcons() { alert("Feature under development."); }
+  </script>
+</body>
+</html>
