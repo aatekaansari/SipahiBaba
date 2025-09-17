@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khan Ka Samsi Noori Zahangir</title>
+  <meta name="theme-color" content="#00796b"/>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icon-192x192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #00796b; 
+      --primary-dark: #004d40;
+      --secondary-color: #0288d1;
+      --secondary-dark: #01579b;
+      --accent-color: #009688;
+      --background-color: #f4f6f8; 
+      --surface-color: #ffffff; 
+      --text-color-dark: #263238;
+      --text-color-light: #ffffff;
+      --danger-color: #e53935;
+      --warning-color: #f57c00;
+      --border-color: #e0e0e0;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color-dark);
+      margin: 0;
+      padding-top: 80px;
+      padding-bottom: 60px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header, footer {
+      background-color: var(--primary-color);
+      color: var(--text-color-light);
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    header { top: 0; }
+    footer { bottom: 0; text-align: center; padding: 15px; font-size: 0.9em; background-color: #263238; }
+    .header-box { display: flex; align-items: center; padding: 10px 15px; }
+    .logo-preview { width: 55px; height: 55px; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.5); flex-shrink: 0; }
+    .logo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .text-content { margin-left: 15px; }
+    .text-content h1 { margin: 0; font-size: 1.1em; font-weight: 600; line-height: 1.2; color: var(--text-color-light); }
+    .text-content p { margin: 4px 0 0; font-size: 0.9em; opacity: 0.9; color: var(--text-color-light); }
+
+
+#loginContainer { display: flex; justify-content: center; align-items: center; flex-grow: 1; padding: 20px; }
+.login-box {
+background-color: var(--surface-color); padding: 30px; border-radius: 16px; box-shadow: var(--shadow);
+width: 100%; max-width: 420px; text-align: center; transition: all 0.3s ease;
+}
+.login-box:hover { box-shadow: var(--shadow-hover); transform: translateY(-5px); }
+.login-box h2 { margin-top: 0; margin-bottom: 30px; color: var(--primary-color); font-weight: 600; }
+.login-box .form-group { margin-bottom: 25px; }
+.login-box label { display: block; text-align: left; margin-bottom: 8px; font-weight: 500; }
+.login-box input {
+width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1em;
+transition: border-color 0.3s, box-shadow 0.3s;
+}
+.login-box input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2); outline: none; }
+.login-box button {
+width: 100%; padding: 14px; border: none; border-radius: 10px; background-color: var(--primary-color);
+color: var(--text-color-light); font-size: 1.1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+}
+.login-box button:hover { background-color: var(--primary-dark); transform: translateY(-2px); }
+
+#appContainer { padding-top: 60px; flex-grow: 1; display: none; }
+.control-bar {
+position: fixed; top: 80px; left: 0; right: 0; background-color: var(--surface-color);
+display: flex; justify-content: space-around; align-items: center; padding: 10px 5px;
+z-index: 999; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.control-bar button {
+background: var(--secondary-color); color: var(--text-color-light); border: none; font-size: 0.9em;
+font-weight: 500; cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: all 0.3s ease;
+flex-grow: 1; margin: 0 5px;
+}
+.control-bar button:hover { background-color: var(--secondary-dark); transform: translateY(-2px); }
+#sidebar-icon { font-size: 24px; background: transparent; color: var(--primary-color); flex-grow: 0; min-width: 40px; }
+main { padding: 15px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+#accountList {
+background-color: var(--surface-color); padding: 20px; border-radius: 16px;
+box-shadow: var(--shadow); margin-bottom: 25px;
+}
+.account-list-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+#totalAccounts { font-size: 1.1em; font-weight: 600; color: var(--primary-dark); }
+
+.current-account-display {
+background-color: #e8f5e9;
+padding: 15px;
+border-radius: 12px;
+margin-bottom: 20px;
+border: 1px solid #a5d6a7;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.current-account-display h3 {
+margin: 0;
+font-size: 1.2em;
+color: var(--primary-dark);
+}
+#deleteCurrentAccountBtn {
+background-color: var(--danger-color);
+color: white;
+border: none;
+border-radius: 8px;
+padding: 8px 12px;
+font-size: 0.9em;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+#deleteCurrentAccountBtn:hover {
+background-color: #c62828;
+}
+#accountDropdown {
+width: 100%;
+padding: 12px;
+border-radius: 10px;
+border: 1px solid var(--border-color);
+font-size: 1em;
+}
+
+.output-card {
+background-color: var(--surface-color); border-radius: 16px; margin-bottom: 25px;
+overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease;
+}
+.output-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-5px); }
+.output-card .header-box { border-radius: 16px 16px 0 0; background-color: var(--primary-color); padding: 15px;}
+.card-content-wrapper { padding: 20px; }
+.card-profile { font-size: 1em; margin-bottom: 20px; }
+.card-profile p { margin: 8px 0; line-height: 1.6; word-wrap: break-word; }
+.profile-meta-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+}
+.profile-meta-header p {
+margin: 0 0 10px 0;
+}
+.profile-description-box {
+background-color: #e8f5e9; border: 1px solid #a5d6a7; padding: 15px;
+margin-top: 15px; border-radius: 12px; font-size: 0.95em; white-space: pre-wrap;
+}
+.entry-table table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; font-size: 1em; border: 1px solid var(--border-color); }
+.entry-table th, .entry-table td { padding: 12px; border: 1px solid var(--border-color); text-align: left; }
+.entry-table th { background-color: #e3f2fd; color: var(--text-color-dark); width: 35%; font-weight: 500;}
+.entry-table td { font-weight: 400; white-space: pre-wrap; word-wrap: break-word; }
+.description-box { margin-top: 20px; padding: 15px; background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 12px; font-size: 0.9em; line-height: 1.7; }
+.rules-box {
+margin-top: 20px; padding: 15px; background-color: #fffae6;
+border: 1px solid #ffd54f; border-radius: 12px; font-size: 0.9em;
+line-height: 1.7; white-space: pre-wrap; word-wrap: break-word;
+}
+.center-address-line {
+text-align: center;
+font-size: 0.85em;
+margin-top: 20px;
+padding-top: 15px;
+border-top: 1px solid var(--border-color);
+}
+.center-address-line strong {
+color: var(--primary-dark);
+margin-right: 8px;
+}
+.card-buttons { display: flex; gap: 10px; padding: 15px; background-color: var(--background-color); border-top: 1px solid var(--border-color);}
+.card-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; color: var(--text-color-light); font-weight: 600; cursor: pointer; font-size: 0.9em; transition: all 0.3s ease; }
+.card-buttons button:last-child { background-color: var(--secondary-color); }
+.card-buttons button:last-child:hover { background-color: var(--secondary-dark); }
+.card-buttons button:first-child { background-color: var(--danger-color); }
+.card-buttons button:first-child:hover { background-color: #c62828; }
+
+.modal {
+display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
+background: rgba(0,0,0,0.6); justify-content: center; align-items: center; animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-content {
+background: var(--surface-color); padding: 25px; border-radius: 16px; width: 90%; max-width: 550px;
+max-height: 90vh; overflow-y: auto; animation: slideIn 0.4s ease;
+}
+@keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-content h2 { margin-top: 0; font-size: 1.4em; font-weight: 600; color: var(--primary-color); }
+.modal-content .form-group { margin-bottom: 15px; }
+.modal-content label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 1em; }
+.modal-content input, .modal-content textarea, .modal-content select {
+width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1em;
+transition: border-color 0.3s, box-shadow 0.3s;
+}
+.modal-content input:focus, .modal-content textarea:focus, .modal-content select:focus {
+border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2); outline: none;
+}
+.modal-content button {
+padding: 12px 18px; border-radius: 10px; border: none; font-size: 1em; font-weight: 500;
+cursor: pointer; background-color: var(--primary-color); color: var(--text-color-light);
+transition: all 0.3s ease;
+}
+.modal-content button:hover { background-color: var(--primary-dark); transform: translateY(-2px); }
+
+#sidebar {
+position: fixed; z-index: 3000; top: 0; right: -320px; width: 300px; height: 100%;
+background: var(--surface-color); box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+padding: 20px; box-sizing: border-box; overflow-y: auto;
+}
+#sidebar.open { right: 0; }
+#sidebar h2 { text-align: center; color: var(--primary-color); font-weight: 600; }
+#sidebar ul { list-style: none; padding: 0; margin: 25px 0; }
+#sidebar li {
+display: flex; align-items: center; padding: 15px; cursor: pointer; border-left: 5px solid transparent;
+text-align: left; font-size: 1.05em; transition: all 0.3s;
+border-radius: 8px; margin-bottom: 10px; font-weight: 500;
+}
+#sidebar li:hover { background-color: #e0f2f1; border-left: 5px solid var(--accent-color); color: var(--primary-dark); }
+#sidebar li[onclick="handleLogout()"] { color: var(--danger-color); }
+#sidebar li[onclick="handleLogout()"]:hover { background-color: #ffebee; border-left-color: var(--danger-color); }
+#overlay {
+display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+background-color: rgba(0,0,0,0.6); z-index: 2999; animation: fadeIn 0.3s;
+}
+
+#shareModal .modal-content { text-align: center; }
+#shareModal .share-buttons-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 15px;
+margin-top: 20px;
+}
+#shareModal button {
+width: 100%;
+padding: 15px 10px;
+font-size: 1em;
+font-weight: 600;
+border-radius: 12px;
+}
+#shareWhatsappBtn { background-color: #25D366 !important; }
+#shareEmailBtn { background-color: #0288d1 !important; }
+#printPdfBtn { background-color: #607d8b !important; }
+#downloadPdfBtn { background-color: var(--warning-color) !important; }
+
+button.cancel-btn { background-color: #9e9e9e !important; }
+button.cancel-btn:hover { background-color: #757575 !important; }
+#submitBtnContainer button {
+background-color: var(--secondary-color) !important; font-size: 1.1em !important;
+font-weight: 600; width: 100%;
+}
+
+.input-wrapper { display: flex; align-items: center; gap: 8px; }
+.input-wrapper input, .input-wrapper textarea { flex-grow: 1; }
+.snippet-btn {
+padding: 10px 14px; border: none; border-radius: 8px; background-color: var(--secondary-color);
+color: white; cursor: pointer; font-size: 1.2em; font-weight: bold; line-height: 1; flex-shrink: 0;
+transition: background-color 0.3s;
+}
+.snippet-btn:hover { background-color: var(--secondary-dark); }
+#snippetListContainer, #ruleListContainer {
+max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color);
+border-radius: 10px; padding: 10px;
+}
+.snippet-item, .rule-item {
+display: flex; justify-content: space-between; align-items: center; padding: 12px;
+border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background-color 0.2s;
+}
+.snippet-item:last-child, .rule-item:last-child { border-bottom: none; }
+.snippet-item:hover, .rule-item:hover { background-color: #e3f2fd; }
+.snippet-text, .rule-text { flex-grow: 1; word-break: break-word; }
+.snippet-delete-btn, .rule-delete-btn {
+background: var(--danger-color); color: white; border: none; border-radius: 50%; width: 28px;
+height: 28px; cursor: pointer; font-weight: bold; margin-left: 10px; flex-shrink: 0;
+}
+.toggle-vis { cursor: pointer; float: right; font-size: 1.2em; opacity: 0.7; }
+.toggle-vis:hover { opacity: 1; }
+.entry-modal-controls { display: flex; gap: 10px; margin-top: 15px; }
+.entry-modal-controls button {
+padding: 8px 10px; font-size: 0.85em; font-weight: 500;
+flex-grow: 1;
+}
+.label-with-dropdown { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.label-with-dropdown select { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-color); background-color: #fff; }
+#whatsappConfirmModal .modal-content { text-align: center; }
+#whatsappConfirmModal .confirm-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+#whatsappConfirmModal .confirm-buttons button { width: 100%; padding: 15px 10px; }
+
+#viewToggleBtn {
+background-color: var(--accent-color);
+color: white;
+padding: 8px 10px;
+border-radius: 50%;
+font-weight: 600;
+cursor: pointer;
+border: 2px solid white;
+box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+font-size: 1.2em;
+width: 40px;
+height: 40px;
+line-height: 1;
+transition: all 0.3s;
+}
+#viewToggleBtn:hover {
+background-color: var(--primary-dark);
+transform: scale(1.1);
+}
+
+#hiddenFieldsSummary {
+margin-top: 20px;
+padding: 10px;
+border: 1px dashed var(--border-color);
+border-radius: 8px;
+}
+#hiddenFieldsSummary h4 { margin-top: 0; font-size: 0.9em; color: #555; }
+.hidden-item-chip {
+display: inline-block;
+background-color: #e0e0e0;
+color: #333;
+padding: 5px 10px;
+border-radius: 15px;
+margin: 3px;
+font-size: 0.85em;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+.hidden-item-chip:hover { background-color: #bdbdbd; }
+
+@media (max-width: 768px) {
+body { padding-top: 75px; }
+.control-bar { top: 75px; }
+.text-content h1 { font-size: 1em; }
+.text-content p { font-size: 0.8em; }
+}
+</style>
+
+</head>
+<body>
+  <header>
+    <div class="header-box">
+      <div class="logo-preview" id="headerLogo"><img src="https://raw.githubusercontent.com/aatekaansari/SipahiBaba/main/logo.png" alt="Logo"></div>
+      <div class="text-content">
+        <h1 id="headerTitle">Khan Ka Samsi Noori Zahangir</h1>
+        <p id="headerSubtitle">Sipahi Baba Ruhani Alaaj</p>
+      </div>
+    </div>
+  </header>
+
+  <div id="loginContainer">
+      <div class="login-box">
+          <h2>Admin Login</h2>
+          <div class="form-group"><label for="email">ईमेल:</label><input type="email" id="email" placeholder="admin@example.com"></div>
+          <div class="form-group"><label for="password">पासवर्ड:</label><input type="password" id="password" placeholder="password"></div>
+          <button type="button" onclick="handleLogin()">Login</button>
+      </div>
+  </div>
+
+  <div id="appContainer">
+    <div class="control-bar">
+      <button onclick="openEntryModal()">Add Entry</button>
+      <button onclick="openProfileModal()">Create Account</button>
+      <button id="sidebar-icon" onclick="openSidebar()">&#9776;</button>
+    </div>
+
+<div id="sidebar">
+  <h2>Menu</h2>
+  <ul>
+    <li id="installAppItem" onclick="installApp()" style="display:none; background-color: var(--secondary-color); color: white; border-left-color: var(--primary-dark);">Install App</li>
+    <li onclick="logoFileInput.click(); closeSidebar();">Upload Logo</li>
+    <li onclick="openHeaderTextsModal(); closeSidebar();">Edit Header Texts</li>
+    <li onclick="openEditProfileModal(); closeSidebar();">Edit Profile Details</li>
+    <li onclick="openColumnSettingsModal(); closeSidebar();">Edit Column Titles</li>
+    <li onclick="openProfileDescriptionModal(); closeSidebar();">Edit Profile Descriptions</li>
+    <li onclick="openAddressModal(); closeSidebar();">Edit Center Address</li>
+    <li onclick="openDisclaimerModal(); closeSidebar();">Edit Disclaimer</li>
+    <li id="disclaimerToggle" onclick="toggleDisclaimerVisibility()">Toggle Disclaimer</li>
+    <li onclick="downloadAllProfiles();">Download All Profiles</li>
+    <li onclick="showBackupModal(); closeSidebar();">Backup Data</li>
+    <li onclick="triggerRestore(); closeSidebar();">Restore Backup</li>
+    <li onclick="openIconUploadModal(); closeSidebar();">Upload App Icons</li>
+    <li onclick="openChangeCredentialsModal(); closeSidebar();">Change Password</li>
+    <li onclick="handleLogout()">Logout</li>
+  </ul>
+  <button type="button" onclick="closeSidebar()" class="cancel-btn" style="width: 100%;">Close</button>
+</div>
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<main>
+  <div id="accountList">
+    <div class="account-list-header">
+        <h2 id="totalAccounts"></h2>
+        <div id="viewToggleContainer"></div>
+    </div>
+    <div id="currentAccountContainer"></div>
+    <div class="form-group">
+        <label for="accountDropdown">Switch Account:</label>
+        <select id="accountDropdown"></select>
+    </div>
+  </div>
+  <div class="output" id="outputSection">
+      <div id="outputContainer"></div>
+  </div>
+</main>
+  </div>
+
+  <footer>© 2025 Khan Ka Samsi Noori Zahangir. All Rights Reserved.</footer>
+
+  <!-- Modals -->
+
+  <div id="profileModal" class="modal"><div class="modal-content"><h2>Create Profile</h2><div class="form-group"><label for="modalName">Name:</label><input type="text" id="modalName"/></div><div class="form-group"><label for="modalMobile">Mobile Number:</label><input type="tel" id="modalMobile" value="+91"/></div><div class="form-group"><label for="modalAddress">Address:</label><input type="text" id="modalAddress"/></div><div class="form-group"><div class="label-with-dropdown"><label for="modalDescription">विवरण (Description):</label><select id="monthSelectorCreate" onchange="addMonthToDescription('monthSelectorCreate', 'modalDescription')"><option value="">माह चुनें</option><option value="1 माह">1 माह</option><option value="2 माह">2 माह</option><option value="3 माह">3 माह</option><option value="4 माह">4 माह</option><option value="5 माह">5 माह</option><option value="6 माह">6 माह</option><option value="7 माह">7 माह</option><option value="8 माह">8 माह</option><option value="9 माह">9 माह</option><option value="10 माह">10 माह</option><option value="11 माह">11 माह</option><option value="12 माह">12 माह</option></select></div><div class="input-wrapper" style="align-items: flex-start;"><textarea id="modalDescription" rows="3"></textarea><button type="button" class="snippet-btn" onclick="openSnippetModal('profileDescription', 'modalDescription', 'Profile Description')">+</button></div></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="saveProfile()" style="background-color: var(--accent-color);">Save Profile</button><button type="button" onclick="closeModal('profileModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="editProfileModal" class="modal"><div class="modal-content"><h2>Edit Profile Details</h2><div class="form-group"><label for="editProfileSelect">Select Profile:</label><select id="editProfileSelect"></select></div><div class="form-group"><label for="editName">Name:</label><input type="text" id="editName"/></div><div class="form-group"><label for="editMobile">Mobile Number:</label><input type="tel" id="editMobile"/></div><div class="form-group"><label for="editAddress">Address:</label><input type="text" id="editAddress"/></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="saveProfileDetails()" style="background-color: var(--accent-color);">Save Changes</button><button type="button" onclick="closeModal('editProfileModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="entryModal" class="modal"><div class="modal-content"><h2>Add Entry</h2><div id="entryFormFields"><div class="form-group" data-field-id="entryAccountSelect"><label for="entryAccountSelect">Account Profile:</label><select id="entryAccountSelect"></select></div><div class="form-group" data-field-id="date"><label for="date">Date:<span class="toggle-vis" onclick="toggleVisibility('date', event)">👁️</span></label><div class="input-wrapper" id="input-wrapper-date"><input type="date" id="date"/></div></div><div class="form-group" data-field-id="fees"><label for="fees">Fees (INR):<span class="toggle-vis" onclick="toggleVisibility('fees', event)">👁️</span></label><div class="input-wrapper" id="input-wrapper-fees"><input type="number" id="fees" step="0.01"/><button type="button" class="snippet-btn" onclick="openSnippetModal('fees', 'fees', 'Fees (INR)')">+</button></div></div><div id="defaultColumnsContainer"></div><div id="extraColumnsContainer"></div><div class="form-group" data-field-id="entryRules"><label for="entryRules">नियम (Rules):<span class="toggle-vis" onclick="toggleVisibility('entryRules', event)">👁️</span></label><div class="input-wrapper" id="input-wrapper-entryRules"><textarea id="entryRules" rows="3"></textarea><button type="button" class="snippet-btn" onclick="openRulesModal()">+</button></div></div></div><div id="submitBtnContainer"><button type="button" onclick="submitEntryModal()">Submit Entry</button></div><div id="hiddenFieldsSummary"></div><div class="entry-modal-controls"><button type="button" onclick="toggleAllColumns(true)">Hide All</button><button type="button" onclick="toggleAllColumns(false)">Show All</button></div><div class="entry-modal-controls"><button type="button" onclick="addColumn()">Add Column</button><button type="button" onclick="removeLastExtraColumn()" class="warning-btn">Remove Column</button></div><div class="form-group" style="margin-top: 20px;"><button type="button" onclick="closeModal('entryModal')" class="cancel-btn" style="width: 100%;">Cancel</button></div></div></div>
+  <div id="headerTextsModal" class="modal"><div class="modal-content"><h2>Edit Header Texts</h2><div class="form-group"><label for="headerTitleInput">Header Title:</label><input type="text" id="headerTitleInput"></div><div class="form-group"><label for="headerSubtitleInput">Header Subtitle:</label><input type="text" id="headerSubtitleInput"></div><div class="form-group" style="display: flex; gap: 10px;"><button onclick="saveHeaderTexts()">Save</button><button onclick="closeModal('headerTextsModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="columnSettingsModal" class="modal"><div class="modal-content"><h2>Edit Default Column Titles</h2><div id="columnSettingsContainer"></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="saveColumnTitles()">Save Titles</button><button type="button" onclick="closeModal('columnSettingsModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="profileDescriptionModal" class="modal"><div class="modal-content"><h2>Edit Profile Description</h2><div class="form-group"><label for="profileSelectForDesc">Select Profile:</label><select id="profileSelectForDesc"></select></div><div class="form-group"><div class="label-with-dropdown"><label for="profileDescriptionTextarea">विवरण (Description):</label><select id="monthSelectorEdit" onchange="addMonthToDescription('monthSelectorEdit', 'profileDescriptionTextarea')"><option value="">माह चुनें</option><option value="1 माह">1 माह</option><option value="2 माह">2 माह</option><option value="3 माह">3 माह</option><option value="4 माह">4 माह</option><option value="5 माह">5 माह</option><option value="6 माह">6 माह</option><option value="7 माह">7 माह</option><option value="8 माह">8 माह</option><option value="9 माह">9 माह</option><option value="10 माह">10 माह</option><option value="11 माह">11 माह</option><option value="12 माह">12 माह</option></select></div><div class="input-wrapper" style="align-items: flex-start;"><textarea id="profileDescriptionTextarea" rows="4"></textarea><button type="button" class="snippet-btn" onclick="openSnippetModal('profileDescription', 'profileDescriptionTextarea', 'Profile Description')">+</button></div></div><div class="form-group" style="display: flex; gap: 10px;"><button onclick="saveProfileDescription()">Save Description</button><button onclick="closeModal('profileDescriptionModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="disclaimerModal" class="modal"><div class="modal-content"><h2>Edit Disclaimer</h2><div class="form-group"><label for="disclaimerText">Disclaimer Text:</label><div class="input-wrapper" style="align-items: flex-start;"><textarea id="disclaimerText" style="height: 250px;"></textarea><button type="button" class="snippet-btn" onclick="openSnippetModal('disclaimerContent', 'disclaimerText', 'Disclaimer Content')">+</button></div></div><div class="form-group" style="display: flex; gap: 10px;"><button type="button" onclick="saveDisclaimer()">Save</button><button type="button" onclick="deleteDisclaimer()" style="background-color: var(--danger-color);">Delete</button><button type="button" onclick="closeModal('disclaimerModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="addressModal" class="modal"><div class="modal-content"><h2>Edit Center Address</h2><div class="form-group"><label for="addressText">Center Address (will appear on all PDFs):</label><textarea id="addressText" style="height: 150px;"></textarea></div><div class="form-group" style="display: flex; gap: 10px;"><button type="button" onclick="saveAddress()">Save</button><button type="button" onclick="closeModal('addressModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="shareModal" class="modal"><div class="modal-content"><h2>Share or Download PDF</h2><div class="share-buttons-grid"><button id="shareWhatsappBtn">Share on WhatsApp</button><button id="downloadPdfBtn">Download PDF</button><button id="shareEmailBtn">Send via Email</button><button id="printPdfBtn">Print PDF</button></div><button type="button" onclick="closeModal('shareModal')" style="margin-top: 20px;" class="cancel-btn">Cancel</button></div></div>
+  <div id="whatsappConfirmModal" class="modal"><div class="modal-content"><h2>WhatsApp पर भेजें</h2><p>आप यह रिपोर्ट किसे भेजना चाहते हैं?</p><div class="confirm-buttons"><button id="sendToCustomerBtn" style="background-color: var(--accent-color);">ग्राहक को भेजें</button><button id="sendToOtherBtn" style="background-color: var(--secondary-color);">किसी और को भेजें</button><button type="button" onclick="closeModal('whatsappConfirmModal')" class="cancel-btn" style="margin-top: 10px;">Cancel</button></div></div></div>
+  <div id="backupModal" class="modal"><div class="modal-content"><h2>Backup Data</h2><p>यह आपके Firebase डेटा का एक लोकल बैकअप बनाएगा।</p><div class="form-group"><label for="backupData">Client Data (JSON):</label><textarea id="backupData" readonly style="height: 150px;"></textarea></div><div class="form-group" style="display: flex; flex-direction: column; gap: 10px;"><button onclick="downloadBackup()">Download Backup</button><button onclick="closeModal('backupModal')" class="cancel-btn">Close</button></div></div></div>
+  <div id="iconUploadModal" class="modal"><div class="modal-content"><h2>Upload App Icons</h2><p>These icons are used for the in-app experience. For the home screen install icon, you must replace the files in your code repository.</p><div class="form-group"><label for="icon192">192x192 Icon:</label><input type="file" id="icon192" accept="image/png"/></div><div class="form-group"><label for="icon512">512x512 Icon:</label><input type="file" id="icon512" accept="image/png"/></div><div class="form-group" style="display: flex; gap: 10px;"><button onclick="saveIcons()">Save Icons</button><button onclick="closeModal('iconUploadModal')" class="cancel-btn">Cancel</button></div></div></div>
+  <div id="credentialsModal" class="modal"><div class="modal-content"><h2>Change Password</h2><div class="form-group"><label for="newPassword">New Password:</label><input type="password" id="newPassword" required /></div><div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;"><button type="button" onclick="saveCredentials()">Save Changes</button><button type="button" onclick="closeModal('credentialsModal')" class="cancel-btn">Cancel</button></div></div></div>
+
+  <div id="snippetModal" class="modal"><div class="modal-content"><h2 id="snippetModalTitle">Manage Snippets</h2><div class="form-group"><label for="newSnippetInput">Add New Snippet:</label><textarea id="newSnippetInput" rows="3" placeholder="Enter new text here..."></textarea></div><button type="button" onclick="saveCurrentSnippet()">Save New Snippet</button><hr style="margin: 20px 0;"><h4>Available Snippets</h4><div id="snippetListContainer"></div><div class="form-group" style="margin-top: 20px;"><button type="button" onclick="closeModal('snippetModal')" class="cancel-btn" style="width: 100%;">Close</button></div></div></div>
+  <div id="rulesModal" class="modal"><div class="modal-content"><h2>नियम प्रबंधित करें (Manage Rules)</h2><div class="form-group"><label for="newRuleInput">नया नियम जोड़ें:</label><textarea id="newRuleInput" rows="3" placeholder="नया नियम यहाँ लिखें..."></textarea></div><button type="button" onclick="saveNewRule()">नया नियम सेव करें</button><hr style="margin: 20px 0;"><h4>उपलब्ध नियम</h4><div id="ruleListContainer"></div><div class="form-group" style="margin-top: 20px;"><button type="button" onclick="closeModal('rulesModal')" class="cancel-btn" style="width: 100%;">बंद करें</button></div></div></div>
+
+  <input type="file" id="restoreFileInput" style="display: none;" accept=".json">
+  <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const firebaseConfig = {
+            apiKey: "AIzaSyDdRgKyM4drYrWkP1wslsv1unmA3G2LaMs",
+            authDomain: "samsiapp.firebaseapp.com",
+            projectId: "samsiapp",
+            storageBucket: "samsiapp.firebasestorage.app",
+            messagingSenderId: "556760829050",
+            appId: "1:556760829050:web:2caa478d5e45f403783fc3"
+        };
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        } catch (e) { console.error("Firebase initialization error:", e); alert("Could not initialize the application. Please refresh the page."); return; }
+
+        const auth = firebase.auth();
+        const db = firebase.database();
+        
+        let userId = null, userRef = null, localSettings = {}, defaultColumns = [], extraColumns = [], accountProfiles = {}, clientFiles = {}, currentClientFile = null, cardCounter = 0, deferredPrompt, snippets = {}, rules = [], currentSnippetTarget = { key: null, inputId: null }, showAllPages = false;
+        const initialDisclaimer = `<div style='text-align: center;'><strong>Piro Murshid Sanadul Aliya</strong><br>Hazrat Khwaja Sufi Shamsuddin Shah Rahmatullah Alaihi</div><br><div style='text-align: center;'><strong>Sahib-e-Sajjada Gaddi Nasheen</strong><br>Hazrat Sufi Mohammad Hasan Shah Shamsi Sanai Hasani Noori Chishi Qadri</div><br><div style='text-align: center; font-size: 14px;'><span>📱 9984405085</span> | <span>✉️ sipahibabatv@gmail.com</span> | <span>▶️ Sipahi Baba Tv</span></div>`;
+        const logoFileInput = document.getElementById('logoFileInput');
+
+        Object.assign(window, { handleLogin, handleLogout, openEntryModal, openProfileModal, openSidebar, closeSidebar, installApp, openHeaderTextsModal, openEditProfileModal, openColumnSettingsModal, openProfileDescriptionModal, openAddressModal, openDisclaimerModal, toggleDisclaimerVisibility, downloadAllProfiles, showBackupModal, triggerRestore, openIconUploadModal, openChangeCredentialsModal, saveProfile, closeModal, addMonthToDescription, openSnippetModal, saveProfileDetails, submitEntryModal, toggleVisibility, openRulesModal, toggleAllColumns, addColumn, removeLastExtraColumn, saveHeaderTexts, saveColumnTitles, saveProfileDescription, saveDisclaimer, deleteDisclaimer, saveAddress, handleCardAction, removeCard, downloadBackup, saveIcons, saveCredentials, saveCurrentSnippet, insertSnippet, deleteSnippet, saveNewRule, applyRule, deleteRule, selectClientFile, togglePageView, deleteCurrentAccount, removeClientFile });
+
+        window.addEventListener('load', () => { if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js').then(reg => console.log('Service worker registered.', reg)).catch(err => console.error('Service worker registration failed:', err)); });
+        window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; const btn = document.getElementById('installAppItem'); if(btn) btn.style.display = 'flex'; });
+        async function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; const btn = document.getElementById('installAppItem'); if(btn) btn.style.display = 'none'; } closeSidebar(); }
+
+        function handleLogin() { const email = document.getElementById('email').value, pass = document.getElementById('password').value; if (!email || !pass) return alert("Please enter both email and password."); auth.signInWithEmailAndPassword(email, pass).catch(error => alert("Login failed: " + error.message)); }
+        function handleLogout() { auth.signOut(); }
+        function openChangeCredentialsModal() { document.getElementById('newPassword').value = ''; document.getElementById('credentialsModal').style.display = 'flex'; closeSidebar();}
+        function saveCredentials() { const newPass = document.getElementById('newPassword').value.trim(); if (!newPass || newPass.length < 6) return alert("Password must be at least 6 characters long."); const user = auth.currentUser; if (user) user.updatePassword(newPass).then(() => { alert("Password updated successfully!"); closeModal('credentialsModal'); }).catch(error => alert("Error updating password: " + error.message + "\nPlease log out and log back in to try again.")); }
+        
+        auth.onAuthStateChanged(user => {
+            const loginContainer = document.getElementById('loginContainer'), appContainer = document.getElementById('appContainer');
+            if (user) { userId = user.uid; userRef = db.ref('users/' + userId); if (loginContainer) loginContainer.style.display = 'none'; if (appContainer) appContainer.style.display = 'block'; initializeApp(); }
+            else { userId = null; userRef = null; if (appContainer) appContainer.style.display = 'none'; if (loginContainer) loginContainer.style.display = 'flex'; }
+        });
+
+        function initializeApp() {
+            userRef.on('value', snapshot => {
+                try {
+                    const data = snapshot.val() || {};
+                    clientFiles = data.clientFiles || {};
+                    accountProfiles = data.accountProfiles || {};
+                    localSettings = data.settings || {};
+                    if (typeof localSettings.showDisclaimer !== 'boolean') localSettings.showDisclaimer = true;
+                    localSettings.columnVisibility = localSettings.columnVisibility || {};
+                    snippets = localSettings.snippets || {};
+                    rules = Array.isArray(localSettings.rules) ? localSettings.rules : [];
+                    extraColumns = Array.isArray(localSettings.extraColumns) ? localSettings.extraColumns : [];
+                    cardCounter = data.cardCounter || 0;
+                    document.getElementById('headerTitle').textContent = localSettings.headerTitle || "Khan Ka Samsi Noori Zahangir";
+                    document.getElementById('headerSubtitle').textContent = localSettings.headerSubtitle || "Sipahi Baba Ruhani Alaaj";
+                    document.getElementById('headerLogo').querySelector('img').src = localSettings.logo || 'https://raw.githubusercontent.com/aatekaansari/SipahiBaba/main/logo.png';
+                    defaultColumns = localSettings.defaultColumns || [{ key: "pina", label: "Pina" }, { key: "chita", label: "Chita" }, { key: "falita", label: "Falita" }, { key: "jalana", label: "Jalana" }];
+                    currentClientFile = localStorage.getItem('currentClientFile-' + userId);
+                    if (!accountProfiles[currentClientFile]) currentClientFile = null;
+                    updateDisclaimerToggleText(); updateDefaultColumnsForm(); updateAccountList(); loadClientFileOutput();
+                } catch (error) { console.error("Error processing Firebase data:", error); alert("An error occurred while loading your data."); }
+            }, error => { console.error("Firebase read failed:", error); alert("Could not connect to the database. Please check your internet connection."); });
+            const restoreInput = document.getElementById('restoreFileInput');
+            if (restoreInput) restoreInput.addEventListener('change', handleRestoreFileSelect);
+        }
+        function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.style.display = 'none'; }
+
+        function openHeaderTextsModal() { document.getElementById('headerTitleInput').value = localSettings.headerTitle || "Khan Ka Samsi Noori Zahangir"; document.getElementById('headerSubtitleInput').value = localSettings.headerSubtitle || "Sipahi Baba Ruhani Alaaj"; document.getElementById('headerTextsModal').style.display = 'flex'; }
+        function saveHeaderTexts() { const newTitle = document.getElementById('headerTitleInput').value.trim(), newSubtitle = document.getElementById('headerSubtitleInput').value.trim(); const updates = { 'settings/headerTitle': newTitle || "Khan Ka Samsi Noori Zahangir", 'settings/headerSubtitle': newSubtitle || "Sipahi Baba Ruhani Alaaj" }; userRef.update(updates).then(() => { alert("Header texts updated!"); closeModal('headerTextsModal'); }).catch(e => alert("Error: " + e.message)); }
+        function openColumnSettingsModal() { const container = document.getElementById('columnSettingsContainer'), currentCols = localSettings.defaultColumns || defaultColumns; container.innerHTML = currentCols.map((col, index) => `<div class="form-group"><label for="col_title_${index}">Title for "${col.key}":</label><input type="text" id="col_title_${index}" value="${col.label}" /></div>`).join(''); document.getElementById('columnSettingsModal').style.display = 'flex'; }
+        function saveColumnTitles() { const newDefaultColumns = localSettings.defaultColumns ? [...localSettings.defaultColumns] : [...defaultColumns]; newDefaultColumns.forEach((col, index) => { const newLabel = document.getElementById(`col_title_${index}`).value; if (newLabel) col.label = newLabel; }); userRef.child('settings/defaultColumns').set(newDefaultColumns).then(() => { alert("Column titles updated!"); closeModal('columnSettingsModal'); }).catch(e => alert("Error: " + e.message)); }
+        function openDisclaimerModal() { document.getElementById('disclaimerText').value = localSettings.disclaimer || initialDisclaimer; document.getElementById('disclaimerModal').style.display = 'flex'; }
+        function saveDisclaimer() { const text = document.getElementById('disclaimerText').value; userRef.child('settings/disclaimer').set(text).then(() => { alert('Disclaimer saved!'); closeModal('disclaimerModal'); }).catch(e => alert("Error: " + e.message)); }
+        function deleteDisclaimer() { if (confirm('Are you sure you want to delete the disclaimer?')) userRef.child('settings/disclaimer').remove().then(() => { alert('Disclaimer deleted!'); closeModal('disclaimerModal'); }).catch(e => alert("Error: " + e.message)); }
+        function openAddressModal() { document.getElementById('addressText').value = localSettings.centerAddress || ''; document.getElementById('addressModal').style.display = 'flex'; }
+        function saveAddress() { const text = document.getElementById('addressText').value; userRef.child('settings/centerAddress').set(text).then(() => { alert('Address saved!'); closeModal('addressModal'); }).catch(e => alert("Error: " + e.message)); }
+        
+        logoFileInput.addEventListener('change', e => { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = event => userRef.child('settings/logo').set(event.target.result).then(() => alert("Logo updated!")).catch(e => alert("Error saving logo: " + e.message)); reader.readAsDataURL(e.target.files[0]); } });
+        
+        function saveProfile() { const name = document.getElementById('modalName').value.trim(); if (!name) return alert("Name is required."); if (/[.#$\[\]]/.test(name)) return alert("Name cannot contain ., #, $, [, or ]"); const profileData = { name, mobile: document.getElementById('modalMobile').value, address: document.getElementById('modalAddress').value, description: document.getElementById('modalDescription').value }; const updates = {}; updates[`/accountProfiles/${name}`] = profileData; if (!clientFiles[name]) updates[`/clientFiles/${name}`] = []; userRef.update(updates).then(() => { selectClientFile(name); closeModal('profileModal'); }).catch(e => alert("Error saving profile: " + e.message)); }
+        async function saveProfileDetails() { const select = document.getElementById('editProfileSelect'), originalName = select.value, newName = document.getElementById('editName').value.trim(); if (!originalName) return alert("Please select a profile to edit."); if (!newName) return alert("Name cannot be empty."); if (/[.#$\[\]]/.test(newName)) return alert("Name cannot contain ., #, $, [, or ]"); const originalProfile = accountProfiles[originalName]; if (!originalProfile) return alert("Original profile not found. Cannot update."); const updatedProfileData = { ...originalProfile, name: newName, mobile: document.getElementById('editMobile').value, address: document.getElementById('editAddress').value }; const updates = {}; if (originalName !== newName) { if (accountProfiles[newName]) return alert("A profile with this new name already exists."); updates[`/accountProfiles/${originalName}`] = null; updates[`/clientFiles/${originalName}`] = null; updates[`/accountProfiles/${newName}`] = updatedProfileData; updates[`/clientFiles/${newName}`] = clientFiles[originalName] || []; if (currentClientFile === originalName) localStorage.setItem('currentClientFile-' + userId, newName); } else updates[`/accountProfiles/${originalName}`] = updatedProfileData; try { await userRef.update(updates); alert("Profile updated successfully!"); closeModal('editProfileModal'); } catch (e) { alert("Error updating profile: " + e.message); } }
+        function saveProfileDescription() { const selectedName = document.getElementById('profileSelectForDesc').value; if (selectedName && accountProfiles[selectedName]) userRef.child(`/accountProfiles/${selectedName}/description`).set(document.getElementById('profileDescriptionTextarea').value).then(() => { alert("Description updated successfully!"); closeModal('profileDescriptionModal'); }).catch(e => alert("Error: " + e.message)); }
+        function addEntry() { const entry = {}; if (document.getElementById('input-wrapper-date').parentElement.style.display !== 'none' && !document.getElementById('date').value) return alert('Please provide a date.'); entry.date = document.getElementById('date').value; if (document.getElementById('input-wrapper-fees').parentElement.style.display !== 'none') entry.fees = document.getElementById('fees').value || ''; if (document.getElementById('input-wrapper-entryRules').parentElement.style.display !== 'none') entry.rules = document.getElementById('entryRules').value || ''; (localSettings.defaultColumns || defaultColumns).forEach(col => { const wrapper = document.getElementById(`input-wrapper-default_${col.key}`); if (wrapper ?.parentElement.style.display !== 'none') { const inputEl = document.getElementById(`default_${col.key}`); if (inputEl) entry[col.key] = inputEl.value || ''; } }); entry.extraColumns = {}; (localSettings.extraColumns || []).forEach((colName, index) => { const wrapper = document.getElementById(`input-wrapper-extra_col_${index}`); if (wrapper ?.parentElement.style.display !== 'none') { const inputEl = document.getElementById(`extra_col_${index}`); if (inputEl) entry.extraColumns[colName] = inputEl.value || ''; } }); const newCardCounter = (cardCounter || 0) + 1; const newCard = { id: newCardCounter, entry: entry }; let currentEntries = []; if (clientFiles && clientFiles[currentClientFile]) { currentEntries = Array.isArray(clientFiles[currentClientFile]) ? clientFiles[currentClientFile] : Object.values(clientFiles[currentClientFile]); currentEntries = currentEntries.filter(Boolean); } currentEntries.push(newCard); const updates = { [`/clientFiles/${currentClientFile}`]: currentEntries, '/cardCounter': newCardCounter }; userRef.update(updates).then(() => { alert('एंट्री सफलतापूर्वक सबमिट हो गई!'); closeModal('entryModal'); }).catch(e => alert("Error adding entry: " + e.message)); }
+        function removeCard(cardId) { if (confirm('Are you sure you want to delete this page?')) { const idToRemove = parseInt(cardId.split('_')[1]), currentEntries = (Array.isArray(clientFiles[currentClientFile]) ? clientFiles[currentClientFile] : Object.values(clientFiles[currentClientFile])).filter(Boolean), newEntries = currentEntries.filter(card => card && card.id !== idToRemove); userRef.child(`/clientFiles/${currentClientFile}`).set(newEntries).catch(e => alert("Error removing card: " + e.message)); } }
+        function deleteCurrentAccount() { if (currentClientFile) removeClientFile(currentClientFile); else alert("No account is currently selected."); }
+        function removeClientFile(fileName) { if (confirm(`Are you sure you want to delete "${fileName}" and all its entries? This cannot be undone.`)) { const updates = { [`/clientFiles/${fileName}`]: null, [`/accountProfiles/${fileName}`]: null }; userRef.update(updates).then(() => { if (currentClientFile === fileName) { currentClientFile = null; localStorage.removeItem('currentClientFile-' + userId); loadClientFileOutput(); updateAccountList(); } }).catch(e => alert("Error deleting file: " + e.message)); } }
+
+        function openProfileModal() { document.getElementById('modalName').value = ''; document.getElementById('modalMobile').value = '+91'; document.getElementById('modalAddress').value = ''; document.getElementById('modalDescription').value = ''; document.getElementById('monthSelectorCreate').value = ''; document.getElementById('profileModal').style.display = 'flex'; }
+        function openEditProfileModal() { const select = document.getElementById('editProfileSelect'); select.innerHTML = '<option value="">Select a profile...</option>' + Object.keys(accountProfiles).sort().map(name => `<option value="${name}">${name}</option>`).join(''); select.onchange = () => { const profile = accountProfiles[select.value]; document.getElementById('editName').value = profile?.name || ''; document.getElementById('editMobile').value = profile?.mobile || ''; document.getElementById('editAddress').value = profile?.address || ''; }; select.dispatchEvent(new Event('change')); document.getElementById('editProfileModal').style.display = 'flex'; }
+        function openEntryModal() { if (Object.keys(accountProfiles).length === 0) return alert("Please create a profile first."); document.getElementById('date').valueAsDate = new Date(); const select = document.getElementById('entryAccountSelect'); select.innerHTML = Object.keys(accountProfiles).sort().map(name => `<option value="${name}">${name}</option>`).join(''); if (currentClientFile && accountProfiles[currentClientFile]) select.value = currentClientFile; document.getElementById('fees').value = ''; document.getElementById('entryRules').value = ''; (localSettings.defaultColumns || defaultColumns).forEach(col => { const el = document.getElementById(`default_${col.key}`); if (el) el.value = ''; }); extraColumns = localSettings.extraColumns || []; updateExtraColumnsForm(); applyColumnVisibility(); updateHiddenSummary(); document.getElementById('entryModal').style.display = 'flex'; }
+        function submitEntryModal() { currentClientFile = document.getElementById('entryAccountSelect').value; if (!currentClientFile) return alert("Please select an account."); addEntry(); }
+        function formatDate(isoDate) { if (!isoDate || typeof isoDate !== 'string') return ''; try { const [year, month, day] = isoDate.split('-'); return `${day}-${month}-${year}`; } catch { return isoDate; } }
+        function createOutputCard(cardData) { if (!cardData || !cardData.entry) return ''; const { id, entry } = cardData, headerTitleText = localSettings.headerTitle || "Khan Ka Samsi Noori Zahangir", headerSubtitleText = localSettings.headerSubtitle || "Sipahi Baba Ruhani Alaaj", logoSrc = localSettings.logo || 'https://raw.githubusercontent.com/aatekaansari/SipahiBaba/main/logo.png', disclaimer = localSettings.disclaimer || initialDisclaimer, centerAddress = localSettings.centerAddress || ''; let profileHTML = 'Profile not found.'; if (currentClientFile && accountProfiles[currentClientFile]) { const pData = accountProfiles[currentClientFile]; let metaHTML = `<div class="profile-meta-header"><p><strong>Date:</strong> ${formatDate(entry.date)}</p>${entry.fees ? `<p><strong>Fees:</strong> ${entry.fees} INR</p>` : ''}</div>`; profileHTML = `<div class="card-profile" data-profile-name="${pData.name}">${metaHTML}<p><strong>Name:</strong> ${pData.name || ''}</p><p><strong>Mobile:</strong> ${pData.mobile || ''}</p><p><strong>Address:</strong> ${pData.address || ''}</p><div class="profile-description-box">${pData.description || ''}</div></div>`; } let tableRows = ``; (localSettings.defaultColumns || defaultColumns).forEach(col => { if (entry[col.key]) tableRows += `<tr><th>${col.label}</th><td>${entry[col.key]}</td></tr>`; }); if (entry.extraColumns) Object.entries(entry.extraColumns).forEach(([key, value]) => { if (value) tableRows += `<tr><th>${key}</th><td>${value}</td></tr>`; }); const disclaimerHTML = localSettings.showDisclaimer ? `<div class="description-box">${disclaimer}</div>` : '', rulesHTML = entry.rules ? `<div class="rules-box"><strong>नियम:</strong><br>${entry.rules}</div>` : '', addressHTML = centerAddress ? `<p class="center-address-line"><strong>Address:</strong> ${centerAddress}</p>` : '', tableHTML = tableRows ? `<div class="entry-table"><table><tbody>${tableRows}</tbody></table></div>` : ''; return `<div class="output-card" id="outputCard_${id}"><div class="header-box"><div class="logo-preview"><img src="${logoSrc}" alt="Logo"></div><div class="text-content"><h1>${headerTitleText}</h1><p>${headerSubtitleText}</p></div></div><div class="card-content-wrapper">${profileHTML}${tableHTML}${disclaimerHTML}${rulesHTML}${addressHTML}</div><div class="card-buttons"><button onclick="removeCard('outputCard_${id}')">Remove Page</button><button onclick="handleCardAction('outputCard_${id}')">Share / Download</button></div></div>`; }
+        function updateAccountList() {
+            const total = Object.keys(accountProfiles).length;
+            document.getElementById('totalAccounts').textContent = `Total Accounts: ${total}`;
+            const currentAccountContainer = document.getElementById('currentAccountContainer'), accountDropdown = document.getElementById('accountDropdown');
+            if (currentClientFile && accountProfiles[currentClientFile]) {
+                const entries = (clientFiles && clientFiles[currentClientFile]) ? (Array.isArray(clientFiles[currentClientFile]) ? clientFiles[currentClientFile] : Object.values(clientFiles[currentClientFile])).filter(Boolean) : [];
+                currentAccountContainer.innerHTML = `<div class="current-account-display"><h3>Current: ${currentClientFile} (${entries.length})</h3><button id="deleteCurrentAccountBtn" onclick="deleteCurrentAccount()">Delete Account</button></div>`;
+            } else currentAccountContainer.innerHTML = '';
+            const sortedFiles = Object.keys(accountProfiles).sort((a, b) => a.localeCompare(b));
+            accountDropdown.innerHTML = `<option value="">Select another account...</option>` + sortedFiles.map(file => { const entries = (clientFiles && clientFiles[file]) ? (Array.isArray(clientFiles[file]) ? clientFiles[file] : Object.values(clientFiles[file])).filter(Boolean) : []; return `<option value="${file}" ${file === currentClientFile ? 'disabled' : ''}>${file} (${entries.length})</option>`; }).join('');
+            accountDropdown.onchange = e => { if (e.target.value) selectClientFile(e.target.value); };
+        }
+        function selectClientFile(fileName) { currentClientFile = fileName; showAllPages = false; localStorage.setItem('currentClientFile-' + userId, fileName); loadClientFileOutput(); updateAccountList(); }
+        function togglePageView() { showAllPages = !showAllPages; loadClientFileOutput(); }
+        function loadClientFileOutput() { const container = document.getElementById('outputContainer'), toggleContainer = document.getElementById('viewToggleContainer'); container.innerHTML = ""; toggleContainer.innerHTML = ""; if (currentClientFile && clientFiles && clientFiles[currentClientFile]) { const entries = (Array.isArray(clientFiles[currentClientFile]) ? clientFiles[currentClientFile] : Object.values(clientFiles[currentClientFile])).filter(Boolean); if (entries.length === 0) { container.innerHTML = `<p style="text-align:center; color: #757575; margin-top: 30px;">No entries for this profile yet. Click "Add Entry" to begin.</p>`; return; } if (entries.length > 1) { const btnTitle = showAllPages ? 'Show only latest entry' : `View all ${entries.length} entries`; toggleContainer.innerHTML = `<button id="viewToggleBtn" onclick="togglePageView()" title="${btnTitle}">${showAllPages ? '📄' : '🗂️'}</button>`; } const sortedEntries = entries.sort((a, b) => (a.id > b.id) ? 1 : -1); const entriesToDisplay = showAllPages ? sortedEntries.slice().reverse() : [sortedEntries[sortedEntries.length - 1]]; entriesToDisplay.forEach(cardData => { if (cardData) container.innerHTML += createOutputCard(cardData); }); } else if (Object.keys(accountProfiles).length > 0) container.innerHTML = `<p style="text-align:center; color: #757575; margin-top: 30px;">Select an account to view entries.</p>`; else container.innerHTML = `<p style="text-align:center; color: #757575; margin-top: 30px;">No accounts created yet. Click "Create Account" to start.</p>`; }
+        function openProfileDescriptionModal() { const select = document.getElementById('profileSelectForDesc'); select.innerHTML = Object.keys(accountProfiles).sort().map(name => `<option value="${name}">${name}</option>`).join(''); select.onchange = () => { const profile = accountProfiles[select.value]; document.getElementById('profileDescriptionTextarea').value = profile?.description || ''; }; select.dispatchEvent(new Event('change')); document.getElementById('monthSelectorEdit').value = ''; document.getElementById('profileDescriptionModal').style.display = 'flex'; }
+        
+        function triggerRestore() { document.getElementById('restoreFileInput').click(); }
+        function handleRestoreFileSelect(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = e => { try { const backupData = JSON.parse(e.target.result); if (!backupData.clientFiles || !backupData.accountProfiles) throw new Error("Invalid backup file format."); if (confirm("Are you sure? ALL current data will be overwritten by the backup file.")) userRef.set(backupData).then(() => { alert("Backup restored successfully!"); location.reload(); }).catch(err => alert("Error restoring data: " + err.message)); } catch (error) { alert("Failed to read backup file: " + error.message); } }; reader.readAsText(file); event.target.value = ''; }
+        function showBackupModal() { userRef.get().then(snapshot => { document.getElementById('backupData').value = JSON.stringify(snapshot.val(), null, 2); document.getElementById('backupModal').style.display = 'flex'; }); }
+        function downloadBackup() { const data = document.getElementById('backupData').value, blob = new Blob([data], { type: 'application/json' }), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `samsiapp-backup-${new Date().toISOString().slice(0, 10)}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href); }
+        async function downloadAllProfiles() { if (Object.keys(accountProfiles).length === 0) return alert("No profiles to download."); const { jsPDF } = window.jspdf, pdf = new jsPDF('p', 'mm', 'a4'); let yPos = 15; const pageHeight = pdf.internal.pageSize.getHeight() - 15, sortedProfiles = Object.values(accountProfiles).sort((a, b) => a.name.localeCompare(b.name)); for (const pData of sortedProfiles) { pdf.setFontSize(16).setFont(undefined, 'bold'); const nameLines = pdf.splitTextToSize(pData.name || 'N/A', 180); pdf.setFontSize(12).setFont(undefined, 'normal'); const mobileLines = pdf.splitTextToSize(`Mobile: ${pData.mobile || 'N/A'}`, 180), addressLines = pdf.splitTextToSize(`Address: ${pData.address || 'N/A'}`, 180), descLines = pdf.splitTextToSize(`Description: ${pData.description || 'N/A'}`, 180), blockHeight = (nameLines.length * 7) + (mobileLines.length * 5) + (addressLines.length * 5) + (descLines.length * 5) + 15; if (yPos + blockHeight > pageHeight && yPos > 15) { pdf.addPage(); yPos = 15; } pdf.setFontSize(16).setFont(undefined, 'bold'); pdf.text(nameLines, 15, yPos); yPos += (nameLines.length * 7); pdf.setFontSize(12).setFont(undefined, 'normal'); pdf.text(mobileLines, 15, yPos); yPos += (mobileLines.length * 5) + 2; pdf.text(addressLines, 15, yPos); yPos += (addressLines.length * 5) + 2; pdf.text(descLines, 15, yPos); yPos += (descLines.length * 5) + 10; if (yPos < pageHeight && sortedProfiles.indexOf(pData) < sortedProfiles.length - 1) { pdf.line(15, yPos, 195, yPos); yPos += 5; } } pdf.save('all_profiles.pdf'); alert("All profiles PDF has been generated!"); closeSidebar(); }
+        
+        async function handleCardAction(cardId) { const card = document.getElementById(cardId); if (!card) return; const buttons = card.querySelector('.card-buttons'); if (buttons) buttons.style.display = 'none'; const customerMobile = (currentClientFile && accountProfiles[currentClientFile]) ? accountProfiles[currentClientFile].mobile : null, printableCard = document.createElement('div'); printableCard.style.cssText = 'position: absolute; left: -9999px; width: 800px; background: white;'; printableCard.innerHTML = card.outerHTML; document.body.appendChild(printableCard); try { const canvas = await html2canvas(printableCard.querySelector('.output-card'), { scale: 2, useCORS: true }), imgData = canvas.toDataURL('image/jpeg', 0.7), { jsPDF } = window.jspdf, pdf = new jsPDF('p', 'mm', 'a4'), pdfWidth = pdf.internal.pageSize.getWidth(), imgHeight = canvas.height * pdfWidth / canvas.width; pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, imgHeight); openShareModal(pdf, pdf.output('blob'), `${currentClientFile || 'report'}.pdf`, customerMobile); } catch (error) { console.error("PDF generation failed:", error); alert("Could not generate PDF."); } finally { if (buttons) buttons.style.display = 'flex'; document.body.removeChild(printableCard); } }
+        function openShareModal(pdfInstance, pdfBlob, fileName, customerMobile) { const modal = document.getElementById('shareModal'); document.getElementById('downloadPdfBtn').onclick = () => { pdfInstance.save(fileName); closeModal('shareModal'); }; document.getElementById('printPdfBtn').onclick = () => { pdfInstance.autoPrint(); window.open(pdfInstance.output('bloburl'), '_blank'); closeModal('shareModal'); }; const shareWhatsappBtn = document.getElementById('shareWhatsappBtn'), shareFile = new File([pdfBlob], fileName, { type: 'application/pdf' }), shareData = { files: [shareFile], title: fileName }; if (navigator.canShare && navigator.canShare(shareData)) { shareWhatsappBtn.onclick = () => { if (customerMobile) openWhatsappConfirmModal(pdfInstance, fileName, customerMobile, shareData); else navigator.share(shareData).then(() => closeModal('shareModal')).catch(e => console.error("Share failed", e)); }; shareWhatsappBtn.style.display = 'block'; } else shareWhatsappBtn.style.display = 'none'; modal.style.display = 'flex'; }
+        function openWhatsappConfirmModal(pdfInstance, fileName, customerMobile, shareData) { const modal = document.getElementById('whatsappConfirmModal'); document.getElementById('sendToCustomerBtn').onclick = () => { const cleanMobile = customerMobile.replace(/\D/g, ''), whatsappUrl = `https://wa.me/${cleanMobile}?text=${encodeURIComponent('नमस्ते, पेश है आपकी रिपोर्ट।')}`; if (navigator.share) navigator.share(shareData).catch(e => console.error("Share failed, falling back.", e)); else { pdfInstance.save(fileName); window.open(whatsappUrl, '_blank'); } closeModal('whatsappConfirmModal'); closeModal('shareModal'); }; document.getElementById('sendToOtherBtn').onclick = () => { navigator.share(shareData).then(() => { closeModal('whatsappConfirmModal'); closeModal('shareModal'); }); }; modal.style.display = 'flex'; }
+        
+        function openIconUploadModal() { document.getElementById('iconUploadModal').style.display = 'flex'; closeSidebar();}
+        function saveIcons() { const icon192File = document.getElementById('icon192').files[0], icon512File = document.getElementById('icon512').files[0], promises = []; const readFileAsDataURL = file => new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(file); }); if (icon192File) promises.push(readFileAsDataURL(icon192File).then(dataUrl => userRef.child('settings/icon192').set(dataUrl))); if (icon512File) promises.push(readFileAsDataURL(icon512File).then(dataUrl => userRef.child('settings/icon512').set(dataUrl))); if (promises.length > 0) Promise.all(promises).then(() => { alert('Icons saved successfully! The changes will apply within the app.'); closeModal('iconUploadModal'); }).catch(e => alert('Error saving icons: ' + e.message)); else alert('Please select at least one icon file.'); }
+        function toggleDisclaimerVisibility() { localSettings.showDisclaimer = !localSettings.showDisclaimer; userRef.child('settings/showDisclaimer').set(localSettings.showDisclaimer).then(() => { updateDisclaimerToggleText(); loadClientFileOutput(); closeSidebar(); }).catch(e => alert('Error toggling disclaimer: ' + e.message)); }
+        function updateDisclaimerToggleText() { const toggleElement = document.getElementById('disclaimerToggle'); if (toggleElement) toggleElement.textContent = localSettings.showDisclaimer ? 'Hide Disclaimer' : 'Show Disclaimer'; }
+
+        function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').style.display = 'block'; }
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
+        function addColumn() { const colName = prompt("Enter new column name:"); if (colName ?.trim()) { extraColumns.push(colName.trim()); userRef.child('settings/extraColumns').set(extraColumns); updateExtraColumnsForm(); } }
+        function removeLastExtraColumn() { if (extraColumns.length > 0) { extraColumns.pop(); userRef.child('settings/extraColumns').set(extraColumns); updateExtraColumnsForm(); } else alert("No extra columns to remove."); }
+        function updateDefaultColumnsForm() { document.getElementById('defaultColumnsContainer').innerHTML = (localSettings.defaultColumns || defaultColumns).map(col => `<div class="form-group" data-field-id="default_${col.key}"><label for="default_${col.key}">${col.label}<span class="toggle-vis" onclick="toggleVisibility('default_${col.key}', event)">👁️</span></label><div class="input-wrapper" id="input-wrapper-default_${col.key}"><input type="text" id="default_${col.key}"/><button type="button" class="snippet-btn" onclick="openSnippetModal('${col.key}', 'default_${col.key}', '${col.label}')">+</button></div></div>`).join(''); }
+        function updateExtraColumnsForm() { document.getElementById('extraColumnsContainer').innerHTML = extraColumns.map((colName, i) => `<div class="form-group" data-field-id="extra_col_${i}"><label for="extra_col_${i}">${colName}<span class="toggle-vis" onclick="toggleVisibility('extra_col_${i}', event)">👁️</span></label><div class="input-wrapper" id="input-wrapper-extra_col_${i}"><input type="text" id="extra_col_${i}"/><button type="button" class="snippet-btn" onclick="openSnippetModal('extra_col_${i}', 'extra_col_${i}', '${colName}')">+</button></div></div>`).join(''); }
+        function toggleVisibility(inputId, event) { event?.stopPropagation(); const formGroup = document.querySelector(`[data-field-id="${inputId}"]`); if (!formGroup) return; const isVisible = formGroup.style.display !== 'none'; formGroup.style.display = isVisible ? 'none' : 'block'; const toggleButton = formGroup.querySelector('.toggle-vis'); if (toggleButton) toggleButton.textContent = isVisible ? '🙈' : '👁️'; if (!localSettings.columnVisibility) localSettings.columnVisibility = {}; localSettings.columnVisibility[inputId] = !isVisible; userRef.child('settings/columnVisibility').set(localSettings.columnVisibility); updateHiddenSummary(); }
+        function toggleAllColumns(shouldHide) { const modal = document.getElementById('entryModal'); if (!localSettings.columnVisibility) localSettings.columnVisibility = {}; modal.querySelectorAll('#entryFormFields .form-group[data-field-id]').forEach(formGroup => { const inputId = formGroup.dataset.fieldId; if (inputId !== 'entryAccountSelect') { formGroup.style.display = shouldHide ? 'none' : 'block'; const toggleButton = formGroup.querySelector('.toggle-vis'); if (toggleButton) toggleButton.textContent = shouldHide ? '🙈' : '👁️'; localSettings.columnVisibility[inputId] = shouldHide; } }); userRef.child('settings/columnVisibility').set(localSettings.columnVisibility); updateHiddenSummary(); }
+        function applyColumnVisibility() { const visibility = localSettings.columnVisibility || {}; Object.entries(visibility).forEach(([id, isHidden]) => { const formGroup = document.querySelector(`[data-field-id="${id}"]`); if (formGroup) { formGroup.style.display = isHidden ? 'none' : 'block'; const toggleButton = formGroup.querySelector('.toggle-vis'); if (toggleButton) toggleButton.textContent = isHidden ? '🙈' : '👁️'; } }); }
+        function updateHiddenSummary() { const summaryContainer = document.getElementById('hiddenFieldsSummary'), hiddenItems = []; document.querySelectorAll('#entryFormFields .form-group[data-field-id]').forEach(group => { if (group.style.display === 'none' && group.querySelector('label')) { const label = group.querySelector('label').firstChild.textContent, id = group.dataset.fieldId; hiddenItems.push({ label, id }); } }); if (hiddenItems.length > 0) { summaryContainer.innerHTML = `<h4>छिपे हुए कॉलम (क्लिक करके दिखाएँ)</h4>` + hiddenItems.map(item => `<span class="hidden-item-chip" onclick="toggleVisibility('${item.id}', event)">${item.label}</span>`).join(''); summaryContainer.style.display = 'block'; } else summaryContainer.style.display = 'none'; }
+        function addMonthToDescription(selectorId, textareaId) { const selector = document.getElementById(selectorId), textarea = document.getElementById(textareaId); if (selector.value) { textarea.value += (textarea.value ? `\n` : '') + `[अवधि: ${selector.value}] इलाज चलेगा`; selector.value = ""; } }
+        
+        function openSnippetModal(key, inputId, label) { currentSnippetTarget = { key, inputId }; document.getElementById('snippetModalTitle').textContent = `Snippets for "${label}"`; document.getElementById('newSnippetInput').value = ''; const container = document.getElementById('snippetListContainer'), snippetArray = (snippets && snippets[key]) ? snippets[key] : []; container.innerHTML = snippetArray.length === 0 ? '<p style="text-align:center; color:#757575;">No snippets saved yet.</p>' : snippetArray.map((text, index) => `<div class="snippet-item"><span class="snippet-text" onclick="insertSnippet('${text.replace(/'/g, "\\'")}')">${text}</span><button class="snippet-delete-btn" onclick="deleteSnippet('${key.replace(/'/g, "\\'")}', ${index})">X</button></div>`).join(''); document.getElementById('snippetModal').style.display = 'flex'; }
+        function insertSnippet(text) { const inputElement = document.getElementById(currentSnippetTarget.inputId); if (inputElement) inputElement.value += (inputElement.type === 'number' || !inputElement.value ? '' : ' ') + text; closeModal('snippetModal'); }
+        function saveCurrentSnippet() { const { key } = currentSnippetTarget, newSnippetText = document.getElementById('newSnippetInput').value.trim(); if (!key || !newSnippetText) return alert("Snippet text cannot be empty."); if (!snippets[key]) snippets[key] = []; if (snippets[key].includes(newSnippetText)) return alert("This snippet already exists."); snippets[key].push(newSnippetText); const labelEl = document.querySelector(`label[for='${currentSnippetTarget.inputId}']`), labelText = labelEl ? labelEl.textContent : 'Items'; userRef.child('settings/snippets').set(snippets).then(() => openSnippetModal(key, currentSnippetTarget.inputId, labelText)).catch(e => alert("Error saving snippet: " + e.message)); }
+        function deleteSnippet(key, index) { if (!snippets[key]?.[index]) return; if (confirm(`Delete snippet: "${snippets[key][index]}"?`)) { snippets[key].splice(index, 1); const labelEl = document.querySelector(`label[for='${currentSnippetTarget.inputId}']`), labelText = labelEl ? labelEl.textContent : 'Items'; userRef.child('settings/snippets').set(snippets).then(() => openSnippetModal(key, currentSnippetTarget.inputId, labelText)).catch(e => alert("Error deleting snippet: " + e.message)); } }
+        function openRulesModal() { document.getElementById('newRuleInput').value = ''; const container = document.getElementById('ruleListContainer'), currentRules = rules || []; container.innerHTML = currentRules.length === 0 ? '<p style="text-align:center; color:#757575;">कोई नियम अभी तक सेव नहीं है।</p>' : currentRules.map((text, index) => `<div class="rule-item"><span class="rule-text" onclick="applyRule('${text.replace(/'/g, "\\'")}')">${text}</span><button class="rule-delete-btn" onclick="deleteRule(${index})">X</button></div>`).join(''); document.getElementById('rulesModal').style.display = 'flex'; }
+        function applyRule(text) { const textarea = document.getElementById('entryRules'); if (textarea) textarea.value += (textarea.value ? '\n' : '') + text; closeModal('rulesModal'); }
+        function saveNewRule() { const newRuleText = document.getElementById('newRuleInput').value.trim(); if (!newRuleText) return alert("नियम खाली नहीं हो सकता।"); if (!Array.isArray(rules)) rules = []; if (rules.includes(newRuleText)) return alert("यह नियम पहले से मौजूद है।"); rules.push(newRuleText); userRef.child('settings/rules').set(rules).then(() => openRulesModal()).catch(e => alert("नियम सेव करने में त्रुटि: " + e.message)); }
+        function deleteRule(index) { if (!rules || rules[index] === undefined) return; if (confirm(`नियम हटाएं: "${rules[index]}"?`)) { rules.splice(index, 1); userRef.child('settings/rules').set(rules).then(() => openRulesModal()).catch(e => alert("नियम हटाने में त्रुटि: " + e.message)); } }
+    });
+  </script>
+
+</body>
+</html>
