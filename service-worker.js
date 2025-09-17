@@ -1,11 +1,11 @@
-const CACHE_NAME = 'samsi-app-cache-v2'; // v2 to ensure update
+const CACHE_NAME = 'samsi-app-cache-v3'; // Cache version updated to ensure changes apply
 const urlsToCache = [
-'/',
-'/index.html',
-'/manifest.json',
-'https://raw.githubusercontent.com/aatekaansari/SipahiBaba/main/logo.png',
-'https://raw.githubusercontent.com/aatekaansari/SipahiBaba/main/icon-192x192.png',
-'https://raw.githubusercontent.com/aatekaansari/SipahiBaba/main/icon-512x512.png',
+'./', // Caches the root page (index.html)
+'./index.html',
+'./manifest.json',
+'./logo.png',
+'./icon-192x192.png',
+'./icon-512x512.png',
 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
 'https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js',
 'https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js',
@@ -29,24 +29,13 @@ self.addEventListener('fetch', event => {
 if (event.request.method !== 'GET') {
 return;
 }
-
-// Network first for html, and cache first for others
-if (event.request.mode === 'navigate') {
-event.respondWith(
-fetch(event.request).catch(() => caches.match(event.request))
-);
-return;
-}
-
 event.respondWith(
 caches.match(event.request)
 .then(function(response) {
-return response || fetch(event.request).then(fetchResponse => {
-return caches.open(CACHE_NAME).then(cache => {
-cache.put(event.request, fetchResponse.clone());
-return fetchResponse;
-});
-});
+if (response) {
+return response;
+}
+return fetch(event.request);
 })
 );
 });
